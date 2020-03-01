@@ -1,0 +1,52 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://${domain.name}:3306/glasses?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+  resources:
+    static-locations:
+      - classpath:/META-INF/resources/
+      - classpath:/resources/
+      - classpath:/static/
+      - classpath:/public/
+      - file:${file-path}
+  thymeleaf:
+    cache: false
+mybatis:
+  config-location: classpath:/mybatis/mybatis.cfg.xml
+  mapper-locations: classpath:/mybatis/mapper/**/*.xml
+
+
+---
+spring:
+  profiles: local
+server:
+  ssl:
+    key-store: classpath:3515035_psglasses.xyz.pfx
+    key-store-password: 46g3hKJB
+    key-store-type: PKCS12
+  port: 8443
+http:
+  port: 9090
+filePath: D:/spring
+domain:
+  name: localhost
+
+---
+spring:
+  profiles: dev
+server:
+  ssl:
+    key-store: classpath:3525051_www.psglasses.xyz.pfx
+    key-store-password: Rs102pXA
+    key-store-type: PKCS12
+  port: 443
+http:
+  port: 80
+filePath: /home/root/files/
+domain:
+  name: 47.108.182.111
+

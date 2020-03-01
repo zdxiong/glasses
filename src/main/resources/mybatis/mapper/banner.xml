@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.BannerMapper">
+    <insert id="insert" parameterType="com.xp.glasses.entity.form.BannerForm">
+        INSERT INTO banner
+        (id, name, mapping_id, description, url, sort, create_time, type) VALUES
+        (
+        #{id},
+        #{name},
+        #{mappingId},
+        #{description},
+        #{url},
+        #{sort},
+        #{createTime},
+        #{type}
+        )
+    </insert>
+    <select id="select" parameterType="map" resultType="com.xp.glasses.entity.Banner">
+        SELECT
+        id,
+        name,
+        mapping_id as mappingId,
+        description,
+        url,
+        sort,
+        create_time as createTime,
+        type
+        FROM banner
+        order by sort asc
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM banner
+    </select>
+
+
+    <delete id="deleteById" parameterType="string">
+        DELETE FROM banner where  id = #{id}
+    </delete>
+</mapper>

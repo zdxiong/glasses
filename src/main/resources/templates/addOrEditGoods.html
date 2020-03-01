@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">s
+    <link rel="icon" th:href="@{/favicon.ico}">
+    <title>后台管理系统--门店添加</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/fileinput.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/fileinput.js}"></script>
+    <script th:src="@{/zh.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+    <script th:src="@{/jquery.validate.js}"></script>
+    <script th:src="@{/messages_zh.js}"></script>
+</head>
+
+
+<script>
+    $(function () {
+        // categories();
+        // shops();
+
+        // 初始化文件上传按钮
+        $("#image").fileinput({
+            language: 'zh', //设置语言
+            allowedFileExtensions: ['jpg', 'gif', 'png'],
+            uploadAsync: true, //默认异步上传
+            showUpload: false, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            showCaption: true,//是否显示标题
+            browseClass: "btn btn-default", //按钮样式    
+            dropZoneEnabled: false,//是否显示拖拽区域
+            minFileCount: 1,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            validateInitialCount: true,
+            overwriteInitial: false,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        });
+        $(".file-caption-name").attr("name", "image")
+        $("#shopForm").validate({
+            debug: true, //调试模式取消submit的默认提交功能
+            //errorClass: "label.error", //默认为错误的样式类为：error
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function (form) {   //表单提交句柄,为一回调函数，带一个参数：form
+                form.submit();   //提交表单
+            },
+            rules: {
+                name: {
+                    required: true
+                },
+                nickName: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+                shopId: {
+                    required: true
+                },
+                categoryId: {
+                    required: true
+                },
+                stock: {
+                    required: true
+                },
+                promotion: {
+                    required: true
+                },
+                normalPrice: {
+                    required: true
+                },
+                marketPrice: {
+                    required: true
+                },
+                hot: {
+                    required: true
+                },
+                recommend: {
+                    required: true
+                },
+                isNew: {
+                    required: true
+                },
+                image: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请填写商品名称"
+                },
+                nickName: {
+                    required: "请填写商品附加名称"
+                },
+                description: {
+                    required: "请填写商品介绍"
+                },
+                shopId: {
+                    required: "请选择门店ID"
+                },
+                categoryId: {
+                    required: "请选择类别"
+                },
+                stock: {
+                    required: "请填写库存"
+                },
+                promotion: {
+                    required: "请选择是否促销"
+                },
+                normalPrice: {
+                    required: "请填写基础价格"
+                },
+                marketPrice: {
+                    required: "请填写市场价格"
+                },
+                hot: {
+                    required: "请选择是否热门"
+                },
+                recommend: {
+                    required: "请选择是否推荐"
+                },
+                isNew: {
+                    required: "请选择是否新品"
+                },
+                image: {
+                    required: "请选择主页需要展示的图片图片"
+                }
+            }
+        });
+
+    })
+
+
+    function cuXiaoChange(value) {
+        if (value == 0) {
+            $("#discountsPrice").attr("disabled", true)
+            $("#discountsPrice").attr("placeholder", "已禁用，不可输入促销价格")
+        }
+        if (value == 1) {
+            $("#discountsPrice").attr("disabled", false)
+            $("#discountsPrice").attr("placeholder", "请输入促销价格")
+        }
+    }
+
+    /**
+     * 获取分类信息
+     */
+    function categories() {
+
+        $.ajax({
+            url: "/category/childCategory",
+            type: "get",
+            success: function (data) {
+                if (data.code == 0) {
+                    $.each(data.data, function (index, category) {
+                        $("#categoryId").append('<option value="' + category.id + '">' + category.name + '</option>')
+                    })
+
+                }
+            }
+        })
+    }
+
+
+</script>
+
+
+<body>
+
+<!--引入顶部栏-->
+<div th:replace="~{commons/bar::topBar}"/>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <!--侧边栏-->
+            <div th:replace="~{commons/bar::#sideBar}"/>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="page-header">
+                <h1>我的商品
+                    <small th:text="${type=='edit'?'商品修改':'商品添加'}">商品添加</small>
+                </h1>
+            </div>
+            <!--form 表单-->
+            <form class="form-horizontal" id="shopForm" method="post" style="text-align: left" th:action="${action}"
+                  enctype="multipart/form-data">
+                <!--隐藏域-->
+                <input type="hidden" name="id" th:value="${goods.id}">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">商品标题:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="name" th:value="${goods.name}" class="form-control" id="name" placeholder="商品标题">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nickName" class="col-sm-2 control-label">商品副标题</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="nickName" th:value="${goods.nickName}" class="form-control" id="nickName" placeholder="商品副标题">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">商品介绍:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="description" th:value="${goods.description}" class="form-control" id="description" placeholder="商品介绍">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="brand" class="col-sm-2 control-label">品牌:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="brand" th:value="${goods.brand}" class="form-control" id="brand" placeholder="品牌">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sales" class="col-sm-2 control-label">销量:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="sales" th:value="${goods.sales}" class="form-control" id="sales" placeholder="销量">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock" class="col-sm-2 control-label">库存:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="stock" th:value="${goods.stock}" class="form-control" id="stock" placeholder="库存"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="shopId" class="col-sm-2 control-label">商品门店:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="shopId" id="shopId">
+                            <option th:each="shop:${shops}" th:value="${shop.id}" th:text="${shop.name}" th:selected="${goods.shop.id==shop.id?true:false}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryId" class="col-sm-2 control-label">商品类别:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="categoryId" id="categoryId">
+                            <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${goods.category.id==category.id?true:false}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="promotion" class="col-sm-2 control-label">促销:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="promotion" id="promotion"
+                                onchange="cuXiaoChange(this.value)">
+                            <option value="0" th:selected="${goods.promotion} == 0?true:false">否</option>
+                            <option value="1" th:selected="${goods.promotion} == 1?true:false">是</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="discountsPrice" class="col-sm-2 control-label">促销价:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="discountsPrice" th:value="${goods.discountsPrice}" class="form-control" id="discountsPrice"
+                               placeholder="促销价格" th:disabled="${goods.promotion}==0?true:false">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="normalPrice" class="col-sm-2 control-label">基础价格:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="normalPrice" th:value="${goods.normalPrice}" class="form-control" id="normalPrice"
+                               placeholder="基础价格"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="marketPrice" class="col-sm-2 control-label">市场价:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="marketPrice" th:value="${goods.marketPrice}" class="form-control" id="marketPrice"
+                               placeholder="市场价"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hot" class="col-sm-2 control-label">热门:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="hot" id="hot">
+                            <option value="0" th:selected="${goods.hot} == 0?true:false">否</option>
+                            <option value="1" th:selected="${goods.hot} == 1?true:false">是</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="recommend" class="col-sm-2 control-label">推荐:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="recommend" id="recommend">
+                            <option value="0" th:selected="${goods.recommend} == 0?true:false">否</option>
+                            <option value="1" th:selected="${goods.recommend} == 1?true:false">是</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="isNew" class="col-sm-2 control-label">新品:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="isNew" id="isNew">
+                            <option value="0" th:selected="${goods.isNew} == 0?true:false">否</option>
+                            <option value="1" th:selected="${goods.isNew} == 1?true:false">是</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image" class="col-sm-2 control-label">首页图片:</label>
+                    <div class="col-sm-4">
+                        <input id="image" name="image" type="file" value="上传"/>
+                    </div>
+                </div>
+                <div class="form-group" style="text-align: right">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <button type="submit" class="btn btn-primary" th:text="${type=='edit'?'修改':'添加'}">添加</button>
+                        <button type="reset" class="btn btn-cancel" th:text="${type=='edit'?'恢复':'重置'}">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

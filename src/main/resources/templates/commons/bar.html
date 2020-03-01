@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--顶部栏-->
+<nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="topBar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">xx精品眼镜店后台管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" th:text="'您好,'+${user}"></a></li>
+                <li><a href="#">时间:2020/02/01</a></li>
+                <li><a href="#">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!--侧边栏-->
+<div class="col-sm-2 col-md-2 sidebar" id="sideBar">
+    <ul class="nav nav-sidebar">
+        <li th:class="${activeMenu == 'index'?'active':''}">
+            <a th:href="@{/}">首页</a>
+        </li>
+    </ul>
+    <ul class="nav nav-sidebar">
+        <li th:class="${activeMenu=='goods'?'active':''}">
+            <a th:href="@{/goods/myGoods}">我的商品</a>
+        </li>
+        <li th:class="${activeMenu=='shop'?'active':''}">
+            <a th:href="@{/shop/myShop}">我的门店</a>
+        </li>
+        <li th:class="${activeMenu=='order'?'active':''}">
+            <a th:href="@{/order/myOrder}">我的订单</a>
+        </li>
+        <li th:class="${activeMenu=='consumer'?'active':''}">
+            <a th:href="@{/user/myConsumer}">我的客户</a>
+        </li>
+        <li th:class="${activeMenu=='banner'?'active':''}">
+            <a th:href="@{/banner/banners}">小程序Banner</a>
+        </li>
+    </ul>
+
+</div>
+
+
+</body>
+</html>

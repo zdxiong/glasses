@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/favicon.ico}">
+    <title>后台管理系统--门店添加</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/fileinput.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/fileinput.js}"></script>
+    <script th:src="@{/zh.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+    <script th:src="@{/jquery.validate.js}"></script>
+    <script th:src="@{/messages_zh.js}"></script>
+</head>
+
+
+<script>
+    $(function () {
+        // 初始化文件上传按钮
+        $("#image").fileinput({
+            language: 'zh', //设置语言
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+            uploadAsync: true, //默认异步上传
+            showUpload: false, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            showCaption: true,//是否显示标题
+            browseClass: "btn btn-default", //按钮样式    
+            dropZoneEnabled: false,//是否显示拖拽区域
+            //minImageWidth: 50, //图片的最小宽度
+            //minImageHeight: 50,//图片的最小高度
+            //maxImageWidth: 1000,//图片的最大宽度
+            //maxImageHeight: 1000,//图片的最大高度
+            //maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+            minFileCount: 1,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            validateInitialCount: true,
+            overwriteInitial: false,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+        });
+
+        $("#shopForm").validate({
+            debug: true, //调试模式取消submit的默认提交功能
+            //errorClass: "label.error", //默认为错误的样式类为：error
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function (form) {   //表单提交句柄,为一回调函数，带一个参数：form
+                form.submit();   //提交表单
+            },
+            rules: {
+                name: {
+                    required: true
+                },
+                shopkeeper: {
+                    required: true
+                },
+                cellphone: {
+                    required: true
+                },
+                startTime: {
+                    required: true
+                },
+                quittingTime: {
+                    required: true
+                },
+                workDay: {
+                    required: true
+                },
+                address: {
+                    required: true
+                },
+                description: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请填写店名"
+                },
+                shopkeeper: {
+                    required: "请填写店长"
+                },
+                cellphone: {
+                    required: '请填写移动电话'
+                },
+                startTime: {
+                    required: '请填写上班时间'
+                },
+                quittingTime: {
+                    required: '请填写下班时间'
+                },
+                workDay: {
+                    required: '请填写工作日'
+                },
+                address: {
+                    required: '请填写门店地址'
+                },
+                description: {
+                    required: '请填写门店介绍'
+                }
+            }
+        });
+
+    })
+</script>
+
+
+<body>
+
+<!--引入顶部栏-->
+<div th:replace="~{commons/bar::topBar}"/>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <!--侧边栏-->
+            <div th:replace="~{commons/bar::#sideBar}"/>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="page-header">
+                <h1>我的门店
+                    <small th:text="${type == 'add'?'门店添加':'门店修改'}">门店添加</small>
+                </h1>
+            </div>
+            <!--form 表单-->
+            <form class="form-horizontal" id="shopForm" method="post" th:action="${action}" style="text-align: left">
+                    <!--隐藏域-->
+                    <input type="hidden" name="id" th:value="${shop.id}">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">门店名称:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.name}" name="name" class="form-control" id="name" placeholder="门店名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="shopkeeper" class="col-sm-2 control-label">店长:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.shopkeeper}" name="shopkeeper" class="form-control" id="shopkeeper" placeholder="店长">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="landLine" class="col-sm-2 control-label">固定电话:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.landLine}" name="landLine" class="form-control" id="landLine" placeholder="固定电话">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cellphone"  class="col-sm-2 control-label">移动电话:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.cellphone}"  name="cellphone" class="form-control" id="cellphone" placeholder="移动电话">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime" class="col-sm-2 control-label">上班时间:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.startTime}"  name="startTime" class="form-control" id="startTime" placeholder="上班时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quittingTime" class="col-sm-2 control-label">下班时间:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.quittingTime}" name="quittingTime" class="form-control" id="quittingTime"
+                                   placeholder="下班时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="workDay" class="col-sm-2 control-label">工作日:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.workDay}" name="workDay" class="form-control" id="workDay" placeholder="工作日">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="col-sm-2 control-label">门店地址:</label>
+                        <div class="col-sm-4">
+                            <input type="text" th:value="${shop.address}" name="address" class="form-control" id="address" placeholder="门店地址"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-sm-2 control-label">铺面介绍:</label>
+                        <div class="col-sm-4">
+                            <textarea name="description" th:text="${shop.description}" class="form-control" rows="3" id="description"></textarea>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="image" class="col-sm-2 control-label">图片信息:</label>-->
+                        <!--<div class="col-sm-4">-->
+                            <!--<input id="image" name="image" type="file" value="上传" multiple="multiple"/>-->
+                            <!--<p class="help-block">选择文件时，按住ctrl键选择多个文件进行批量添加。支持jpg, gif, png文件格式</p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="form-group" style="text-align: right">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-primary" th:text="${type == 'add'?'添加':'修改'}">添加</button>
+                            <button type="reset" class="btn btn-cancel" th:if="${type == 'add'}">重置</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

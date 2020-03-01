@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.ShopMapper">
+    <sql id="shopFiled">
+        address,
+        cellphone,
+        start_time AS startTime,
+        shopkeeper,
+        id,
+        quitting_time AS quittingTime,
+        work_day AS workDay,
+        land_line AS landLine,
+        description,
+        name,
+        create_time AS createTime
+    </sql>
+    <insert id="insert" parameterType="com.xp.glasses.entity.form.ShopInsertForm">
+      INSERT INTO
+      shop (
+      id,
+      name,
+      shopkeeper,
+      land_line,
+      cellphone,
+      start_time,
+      quitting_time,
+      work_day,
+      address,
+      description,
+      create_time)
+      VALUES
+      (
+      #{id},
+      #{name},
+      #{shopkeeper},
+      #{landLine},
+      #{cellphone},
+      #{startTime},
+      #{quittingTime},
+      #{workDay},
+      #{address},
+      #{description},
+      #{createTime}
+      )
+  </insert>
+
+    <resultMap id="shopRes" type="com.xp.glasses.entity.Shop">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="shopkeeper" column="shopkeeper"/>
+        <result property="landLine" column="land_line"/>
+        <result property="cellphone" column="cellphone"/>
+        <result property="startTime" column="start_time"/>
+        <result property="quittingTime" column="quitting_time"/>
+        <result property="workDay" column="work_day"/>
+        <result property="address" column="address"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <collection property="images" ofType="com.xp.glasses.entity.Image">
+            <id property="id" column="iId"/>
+            <id property="mappingId" column="mapping_id"/>
+            <id property="url" column="url"/>
+            <id property="type" column="type"/>
+            <id property="sort" column="sort"/>
+        </collection>
+    </resultMap>
+
+    <select id="select" parameterType="map" resultType="com.xp.glasses.entity.Shop">
+        SELECT
+        <include refid="shopFiled"/>
+        FROM shop
+
+        order by create_time desc
+        <if test="start !=null and pageSize !=null">
+            LIMIT #{start},#{pageSize}
+        </if>
+
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM shop
+    </select>
+
+    <select id="selectById" parameterType="String" resultType="com.xp.glasses.entity.Shop">
+        SELECT
+        <include refid="shopFiled"/>
+        FROM shop where id = #{id}
+    </select>
+    <select id="shopInfoById" resultMap="shopRes" parameterType="string">
+        SELECT
+         s.*,
+         img.id as iId,
+         img.mapping_id,
+         img.type,
+         img.sort,
+         img.url
+
+         FROM shop s inner join image img ON s.id = img.mapping_id and type = 'MAIN_SHOP' and s.id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="string">
+        DELETE FROM shop where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.xp.glasses.entity.Shop">
+        UPDATE shop
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="shopkeeper != null and shopkeeper!=''">
+                shopkeeper = #{shopkeeper},
+            </if>
+            <if test="landLine != null and landLine!=''">
+                land_line = #{landLine},
+            </if>
+            <if test="cellphone != null and cellphone!=''">
+                cellphone = #{cellphone},
+            </if>
+            <if test="startTime != null and startTime!=''">
+                start_time = #{startTime},
+            </if>
+            <if test="quittingTime != null and quittingTime!=''">
+                quitting_time = #{quittingTime},
+            </if>
+            <if test="workDay != null and workDay!=''">
+                work_day = #{workDay},
+            </if>
+            <if test="address != null and address!=''">
+                address = #{address},
+            </if>
+            <if test="description != null and description!=''">
+                description = #{description}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM shop WHERE id in (
+            <foreach collection="list" item="id" index="index" separator=",">
+             #{id}
+            </foreach>
+        )
+    </delete>
+</mapper>

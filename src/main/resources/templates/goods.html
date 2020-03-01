@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/favicon.ico}">
+    <title>精品眼镜店后台管理系统</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/fileinput.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+    <script th:src="@{/fileinput.js}"></script>
+    <script th:src="@{/jquery.validate.js}"></script>
+    <script th:src="@{/messages_zh.js}"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+
+<script>
+    window.operateEvents = {
+        //修改
+        "click #btnEdit": function (e, value, row, index) {
+            if (row.promotion == 1) {
+                $("#goodsDiscountsPrice").attr("disabled", false)
+            }
+
+
+            $("#goods_Id").val(row.id)
+            $("#goodsName").val(row.name)
+            $("#goodsNickName").val(row.nickName)
+            $("#goodsDesc").val(row.description)
+            $("#goodsBrand").val(row.brand)
+            $("#goodsSales").val(row.sales)
+            $("#goodsStock").val(row.stock)
+            $("#shopId").val(row.shop.id)
+            $("#categoryId").val(row.category.id)
+            $("#promotion").val(row.promotion)
+
+            $("#goodsDiscountsPrice").val(row.discountsPrice)
+            $("#goodsNormalPrice").val(row.normalPrice)
+            $("#goodsMarketPrice").val(row.marketPrice)
+
+            $("#goodsHot").val(row.hot)
+            $("#goodsRecommend").val(row.recommend)
+            $("#goodsIsNew").val(row.isNew)
+
+            showGoodsModal('/goods/update', 'edit', row.mainImage.url)
+        },
+        "click #btnDelete": function (e, value, row, index) {
+            if (confirm('确定删除该行记录？')) {
+                $.ajax({
+                    type: 'delete',
+                    url: '/goods/delete',
+                    data: {
+                        id: row.id
+                    },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $("#dataTable").bootstrapTable('refresh')
+                        }
+                    },
+                    error: function (msg) {
+                        alert('删除失败')
+                    }
+                })
+
+            }
+        },
+        "click #speAddBtn": function (e, value, row, index) {
+            $('#speName').text(row.name + ":规格添加");
+            $('#goodsId').val(row.id)
+            $('.spe_dialog').modal({
+                show: true,
+                backdrop: 'static'
+            })
+        },
+
+        "click #infoAdd": function (e, value, row, index) {
+            $("#mappingId").val(row.id)
+            $('#goodImageInfo').text(row.name+"-详情图添加")
+            $(".goodInfoImageDialog").modal({
+                show:true,
+                backdrop:'static'
+            })
+        }
+    }
+    var index_exp; // 当前展开的行
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    };
+    $(function () {
+        categories()
+        shops()
+        var icons = {
+            paginationSwitchDown: 'fa-caret-square-down',
+            paginationSwitchUp: 'fa-caret-square-up',
+            refresh: 'glyphicon glyphicon-refresh',
+            toggleOff: 'fa-toggle-off',
+            toggleOn: 'fa-toggle-on',
+            columns: 'fa-th-list',
+            fullscreen: 'fa-arrows-alt',
+            detailOpen: 'glyphicon glyphicon-plus',
+            detailClose: 'glyphicon glyphicon-minus',
+            search: 'glyphicon glyphicon-search'
+        };
+
+
+        // 初始化表格
+        $("#dataTable").bootstrapTable({
+            icons: icons,
+            iconSize: "sm",
+            url: '/goods/list',
+            striped: true,
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '商品名'
+                },
+                {
+                    field: 'nickName',
+                    title: '商品附加标题'
+                },
+                {
+                    field: 'description',
+                    title: '描述信息'
+                },
+                {
+                    field: 'brand',
+                    title: '品牌'
+                },
+                {
+                    field: 'sales',
+                    title: '销量(件)'
+                },
+                {
+                    field: 'stock',
+                    title: '库存(件)'
+                },
+                {
+                    field: 'shop.name',
+                    title: '门店'
+                },
+                {
+                    field: 'category.name',
+                    title: '类别'
+                },
+                {
+                    field: "promotion",
+                    title: '促销',
+                    formatter: function (value) {
+                        if (value == 1) {
+                            return '是'
+                        }
+                        if (value == 0) {
+                            return '否'
+                        }
+                    }
+                },
+                {
+                    field: 'discountsPrice',
+                    title: '折扣价(元)',
+                    formatter: function (value) {
+                        if (null != value) {
+                            return value + ' ￥'
+                        }
+                    }
+                },
+
+                {
+                    field: 'normalPrice',
+                    title: "基础价",
+                    formatter: function (value) {
+                        if (value != null) {
+                            return value + '￥'
+                        }
+                    }
+                },
+
+                {
+                    field: 'marketPrice',
+                    title: '市场价(元)',
+                    formatter: function (value) {
+                        return value + ' ￥'
+                    }
+                },
+                {
+                    field: 'evaluate',
+                    title: '评价数量'
+                },
+                {
+                    field: 'hot',
+                    title: '热门',
+                    formatter: function (value) {
+                        if (value == 1) {
+                            return '是'
+                        }
+                        if (value == 0) {
+                            return '否'
+                        }
+                        return '未知'
+                    }
+                },
+                {
+                    field: 'recommend',
+                    title: '推荐',
+                    formatter: function (value) {
+                        if (value == 1) {
+                            return '是'
+                        }
+                        if (value == 0) {
+                            return '否'
+                        }
+                        return '未知'
+                    }
+                },
+                {
+                    field: 'isNew',
+                    title: '新品',
+                    formatter: function (value) {
+                        if (value == 1) {
+                            return '是'
+                        }
+                        if (value == 0) {
+                            return '否'
+                        }
+                        return '未知'
+                    }
+                },
+                {
+                    field: 'mainImage.url',
+                    title: '主页图片',
+                    formatter: function (value) {
+                        return '<img src="' + value + '" style="height: 50px;width: 50px;"/>'
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    formatter: function (value) {
+                        return new Date(value).format("yyyy-MM-dd")
+                    }
+                }, {
+                    field: 'operate',
+                    title: '操作',
+                    width: '100px',
+                    events: operateEvents,
+                    formatter: operateFormatter
+                }
+
+            ],
+            // data
+            method: 'get',
+            cache: false,
+            pagination: true,
+            paginationLoop: true,
+            sidePagination: 'server',
+            pageNumber: 1,
+            pageSize: 5,
+            pageList: [5, 10],
+            paginationPreText: '上一页',
+            paginationNextText: '下一页',
+            queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+
+                return {
+                    pageSize: params.limit, // 每页要显示的数据条数
+                    currentPage: params.offset / params.limit + 1, // 每页显示数据的开始行号
+                    sort: params.sort, // 要排序的字段
+                    sortOrder: params.order, // 排序规则
+                    shopId:$('#shopId2').val(),
+                    categoryId:$('#categoryId2').val()
+                }
+            },
+            detailView: true,
+            detailFormatter: detailView,
+            // 在展开行时，关闭其余的行,并选中
+            onExpandRow: function (index, row, $detail) {
+                if (index_exp != null || typeof(index_exp) != 'undefined') {
+                    if (index != index_exp) {
+                        $("#dataTable").bootstrapTable("collapseRow", index_exp)
+                    }
+                }
+                index_exp = index
+            }
+        })
+        $("#goodsForm").validate({
+            debug: true, //调试模式取消submit的默认提交功能
+            errorClass: "error", //默认为错误的样式类为：error
+            focusInvalid: true, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function (form) {   //表单提交句柄,为一回调函数，带一个参数：form
+                form.submit();   //提交表单
+            },
+            rules: {
+                name: {
+                    required: true
+                },
+                nickName: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+                shopId: {
+                    required: true
+                },
+                categoryId: {
+                    required: true
+                },
+                stock: {
+                    required: true
+                },
+                promotion: {
+                    required: true
+                },
+                normalPrice: {
+                    required: true
+                },
+                marketPrice: {
+                    required: true
+                },
+                hot: {
+                    required: true
+                },
+                recommend: {
+                    required: true
+                },
+                isNew: {
+                    required: true
+                },
+                image: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请填写商品名称"
+                },
+                nickName: {
+                    required: "请填写商品附加名称"
+                },
+                description: {
+                    required: "请填写商品介绍"
+                },
+                shopId: {
+                    required: "请选择门店ID"
+                },
+                categoryId: {
+                    required: "请选择类别"
+                },
+                stock: {
+                    required: "请填写库存"
+                },
+                promotion: {
+                    required: "请选择是否促销"
+                },
+                normalPrice: {
+                    required: "请填写基础价格"
+                },
+                marketPrice: {
+                    required: "请填写市场价格"
+                },
+                hot: {
+                    required: "请选择是否热门"
+                },
+                recommend: {
+                    required: "请选择是否推荐"
+                },
+                isNew: {
+                    required: "请选择是否新品"
+                },
+                image: {
+                    required: "请选择主页需要展示的图片图片"
+                }
+            }
+        });
+        // 初始化文件上传按钮
+        $("#image,#spe_img,#img").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: "http://127.0.0.1/testDemo/fileupload/upload.do",
+            allowedFileExtensions: ['jpg', 'gif', 'png'],
+            uploadAsync: true, //默认异步上传
+            showUpload: false, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            showCaption: true,//是否显示标题
+            browseClass: "btn btn-default", //按钮样式    
+            dropZoneEnabled: false,//是否显示拖拽区域
+            minFileCount: 1,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            validateInitialCount: true,
+            overwriteInitial: false,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        });
+    })
+
+
+    function detailView(index, row) {
+        var sepTab = $("<table class='spe_table table'></table>").bootstrapTable({
+            url: '/goods/specifications?goodsId=' + row.id,
+            columns: [
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '规格名'
+                },
+                {
+                    field: 'value',
+                    title: '规格值'
+                }
+                ,
+                {
+                    field: 'stock',
+                    title: '库存'
+                }
+                ,
+                {
+                    field: 'attachPrice',
+                    title: '附加价值',
+                    formatter: function (value, row) {
+                        if (value != null) {
+                            return value / 100 + "￥"
+                        }
+                    }
+                }
+                ,
+                {
+                    field: 'imageUrl',
+                    title: '规格图',
+                    formatter: function (value, row) {
+                        if (value != null) {
+                            return '<img src="' + value + '" style="height: 50px;width: 50px"/>'
+                        }
+                    }
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    width: '100px',
+                    formatter: function (value, row) {
+                            return '<a href="/spe/delete?id='+row.id+'">删除</a>'
+                    }
+                }
+            ]
+        });
+
+
+        var sepTab2 = $("<table class='infoImage table-condensed'></table>").bootstrapTable({
+            url: '/img/get1?mappingId='+row.id+'&type=INFO_GOODS',
+            columns: [
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'type',
+                    title: '图片类型'
+                },
+                {
+                    field: 'url',
+                    title: '预览',
+                    formatter:function (value,row) {
+                        return '<img src="'+row.url+'" style="width: 200px;">'
+                    }
+                },
+                {
+                    field: 'sort',
+                    title: '排序'
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    width: '100px',
+                    formatter: function (value, row) {
+                        return '<a href="/img/delImg?type=INFO_GOODS&id='+row.id+'">删除</a>'
+                    }
+                }
+            ]
+        });
+
+        return ['<p>规格:</p>',sepTab,'<hr><p>商品详情图:</p>',sepTab2]
+    }
+
+    function operateFormatter(value, row) {
+        return [
+            '<p>' +
+            '<button id="btnEdit" type="button" class="btn btn-default btn-xs"  >编辑</button>' +
+            '<button id="btnDelete" type="button" class="btn btn-default btn-xs ">删除</button>' +
+            '<button id="speAddBtn" type="button" class="btn btn-default btn-xs ">规格添加</button>' +
+            '<button id="infoAdd" type="button" class="btn btn-default btn-xs ">详图添加</button>' +
+            '</p>'
+        ].join('');
+    }
+
+    // 获取所有分类
+    function categories() {
+
+        $.ajax({
+            url: "/category/childCategory",
+            type: "get",
+            success: function (data) {
+                if (data.code == 0) {
+                    $.each(data.data, function (index, category) {
+                        $("#categoryId").append('<option value="' + category.id + '">' + category.name + '</option>')
+                        $("#categoryId2").append('<option value="' + category.id + '">' + category.name + '</option>')
+                    })
+
+                }
+            }
+        })
+    }
+
+    // 获取所有门店
+    function shops() {
+        $.ajax({
+            url: "/shop/all",
+            type: "get",
+            success: function (data) {
+                if (data.code == 0) {
+                    $.each(data.data, function (index, shop) {
+                        $("#shopId").append('<option value="' + shop.id + '">' + shop.name + '</option>')
+                        $("#shopId2").append('<option value="' + shop.id + '">' + shop.name + '</option>')
+                    })
+
+                }
+            }
+        })
+    }
+
+    // 促销选项卡选项触发事件
+    function promotionChange(value) {
+        // 促销，开启促销价格框
+        if (value == 1) {
+            $(".discountsPrice").attr("disabled", false)
+            $(".discountsPrice").attr("placeholder", "促销价格")
+            $(".discountsPrice").val('')
+        }
+        if (value == 0) {
+            $(".discountsPrice").attr("disabled", true)
+            $(".discountsPrice").attr("placeholder", "已禁用，不可输入促销价格")
+
+        }
+    }
+
+    // 取消商品信息体提交
+    function cancelSubmitForm() {
+        $('#goodsForm')[0].reset()
+        $('.goodsModal').modal('hide')
+        $("#goodsImage").attr('src', null)
+        $("#goodsImage").css('display', 'none')
+    }
+
+    // 开启添加商品模态框
+    function showGoodsModal(action, type, url) {
+        $("#goodsForm").attr('action', action)
+        if (type == 'edit') {
+            $("#image").attr('name', '')
+            $("#file_div").css('display', 'none')
+            $("#goodsImage").attr('src', url)
+            $("#goodsImage").css('display', 'block')
+            $("#goodsFormTitle").text('修改商品')
+            $(".addOrEditGoods").text('修改')
+        }
+        if (type == 'add') {
+            $("#goodsFormTitle").text('添加商品')
+            $(".addOrEditGoods").text('添加')
+            $("#image").attr('name', 'image')
+            $("#file_div").css('display', 'block')
+        }
+        $('.goodsModal').modal({
+            show: true,
+            backdrop: 'static'
+        })
+
+
+    }
+
+    // 在编辑界面双击图片时添加文件选择框
+    function dbClick() {
+        $("#file_div").attr('name', 'image')
+        $("#file_div").css('display', 'block')
+        $("#image").attr('name', 'image')
+    }
+    
+    function cancelSubmitSpe() {
+        $('.spe_dialog').modal('hide')
+    }
+    
+    function searchGoods() {
+        $("#dataTable").bootstrapTable('refreshOptions', {
+            queryParams: function (params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                return {
+                    pageSize: params.limit, // 每页要显示的数据条数
+                    currentPage: params.offset / params.limit + 1, // 每页显示数据的开始行号
+                    shopId:$('#shopId2').val(),
+                    categoryId:$('#categoryId2').val()
+                }
+            },
+        })
+    }
+    function cancelSubmitImages() {
+        $(".goodInfoImageDialog").modal('hide')
+        $("#imageForm")[0].reset();
+    }
+</script>
+
+
+<style>
+
+</style>
+<body>
+
+<!--引入顶部栏-->
+<div th:replace="~{commons/bar::topBar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div th:replace="~{commons/bar::#sideBar(activeMenu='goods')}"></div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="page-header">
+                <h1>我的商品
+                    <small>商品管理</small>
+                </h1>
+            </div>
+            <div class="input-group col-sm-5 toolbar" style="margin-top:0px;position:relative">
+                <form class="form-inline" action="#">
+                    <div class="form-group">
+                        <div>
+                            <select class="form-control" name="shopId" id="shopId2">
+                                <option value="">未选择</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="">
+                            <select class="form-control" name="categoryId" id="categoryId2">
+                                <option value="">未选择</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-search goodsFind" onclick="searchGoods()">查找</button>
+                    <button type="button" class="btn btn-info" style="margin-left:3px" id="addGoodsBtn"
+                            onclick="showGoodsModal('/goods/insert','add')">商品上新</button>
+                </form>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <!--bootstrap table-->
+                <table id="dataTable">
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 图片预览模态框-->
+    <div class="modal fade bs-example-modal-lg imgDialog" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <br>
+                <h4>门店：<span id="imageTitel">测试</span></h4>
+                <hr>
+                <div class="row" id="img_container">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--图片添加模态框-->
+    <div class="modal fade bs-example-modal-lg goodInfoImageDialog" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="text-align: center;">
+                <br>
+                <h4><span id="goodImageInfo"></span></h4>
+                <hr>
+                <!--form 表单-->
+                <form class="form-horizontal" id="imageForm" method="post" th:action="@{/img/insert}"
+                      style="text-align: left" enctype="multipart/form-data">
+                    <!--隐藏域-->
+                    <input type="hidden" name="type" value="INFO_GOODS">
+                    <input type="hidden" id="mappingId" name="mappingId" value="">
+
+
+                    <div class="form-group">
+                        <label for="sort" class="col-sm-4 control-label">顺序</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="sort" name="sort" class="form-control" placeholder="显示顺序">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img" class="col-sm-4 control-label">图片信息:</label>
+                        <div class="col-sm-4">
+                            <input id="img" name="img" type="file" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="text-align: right">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-primary">添加</button>
+                            <button type="reset" class="btn btn-cancel" onclick="cancelSubmitImages()">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--规格添加模态框-->
+    <div class="modal fade bs-example-modal-lg spe_dialog" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="text-align: center;">
+                <br>
+                <h4><span id="speName"></span></h4>
+                <hr>
+                <!--form 表单-->
+                <form class="form-horizontal" id="speForm" method="post" action="/spe/insert"
+                      style="text-align: left" enctype="multipart/form-data">
+                    <!--隐藏域-->
+                    <input type="hidden" id="goodsId" name="goodsId" value="">
+
+                    <div class="form-group">
+                        <label for="name" class="col-sm-4 control-label">规格名称:</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="name" name="name" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="value" class="col-sm-4 control-label">规格值:</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="value" name="value" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock" class="col-sm-4 control-label">库存:</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="stock" name="stock" class="form-control" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attachPrice" class="col-sm-4 control-label">附加价格:</label>
+                        <div class="col-sm-4">
+                            <input type="number" id="attachPrice" name="attachPrice" class="form-control"
+                                   placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="spe_img" class="col-sm-4 control-label">规格图片:</label>
+                        <div class="col-sm-4">
+                            <input id="spe_img" name="image" type="file" value="上传"/>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: right">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-primary speBtn">添加</button>
+                            <button type="reset" class="btn btn-cancel speCancelBtn" onclick="cancelSubmitSpe()">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--添加商品模态框-->
+    <div class="modal fade bs-example-modal-lg goodsModal" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="text-align: center;">
+                <br/>
+                <h4 id="goodsFormTitle">添加商品</h4>
+                <hr>
+                <!--form 表单-->
+                <form class="form-horizontal" id="goodsForm" method="post" style="text-align: left"
+                      enctype="multipart/form-data">
+                    <!--隐藏域-->
+                    <input type="hidden" name="id" id="goods_Id">
+                    <div class="form-group">
+                        <label for="goodsName" class="col-sm-3 control-label">商品标题:</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="name" id="goodsName" class="form-control" placeholder="商品标题">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsNickName" class="col-sm-3 control-label">商品副标题</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="nickName" id="goodsNickName" class="form-control"
+                                   placeholder="商品副标题">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsDesc" class="col-sm-3 control-label">商品介绍:</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="description" id="goodsDesc" class="form-control"
+                                   placeholder="商品介绍">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsBrand" class="col-sm-3 control-label">品牌:</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="brand" id="goodsBrand" class="form-control" placeholder="品牌">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsSales" class="col-sm-3 control-label">销量:</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="sales" id="goodsSales" class="form-control" placeholder="销量">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsStock" class="col-sm-3 control-label">库存:</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="stock" id="goodsStock" class="form-control" placeholder="库存"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">商品门店:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="shopId" id="shopId">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">商品类别:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="categoryId" id="categoryId">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="promotion" class="col-sm-3 control-label">促销:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="promotion" id="promotion"
+                                    onchange="promotionChange(this.value)">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsDiscountsPrice" class="col-sm-3 control-label">促销价(元):</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="discountsPrice" id="goodsDiscountsPrice"
+                                   class="form-control discountsPrice"
+                                   placeholder="促销价格" disabled>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="goodsNormalPrice" class="col-sm-3 control-label">基础价格(元):</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="normalPrice" id="goodsNormalPrice" class="form-control"
+                                   placeholder="基础价格"/>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="goodsMarketPrice" class="col-sm-3 control-label">市场价(元):</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="marketPrice" id="goodsMarketPrice" class="form-control"
+                                   placeholder="市场价"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsHot" class="col-sm-3 control-label">热门:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="hot" id="goodsHot">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsRecommend" class="col-sm-3 control-label">推荐:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="recommend" id="goodsRecommend">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsIsNew" class="col-sm-3 control-label">新品:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" name="isNew" id="goodsIsNew">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="file">
+                        <label for="" class="col-sm-3 control-label">首页图片:</label>
+                        <div class="col-sm-7">
+                            <div class="row">
+                                <div class="col-sm-12" id="file_div">
+                                    <input name="image" id="image" type="file" value="上传"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <span id="fileTitle" style="display: none">双击图片更改</span>
+                                    <img src="" alt="" id="goodsImage" style="display:none;width: 80px;height: 80px;"
+                                         ondblclick="dbClick()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: right">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-primary addOrEditGoods">添加</button>
+                            <button type="button" class="btn btn-cancel cancels" onclick="cancelSubmitForm()">取消
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

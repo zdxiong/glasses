@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>xx精品眼镜店后台管理系统</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+
+</head>
+
+
+
+<body>
+
+<div th:replace="~{commons/bar::topBar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="~{commons/bar::#sideBar(activeMenu='index')}"></div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

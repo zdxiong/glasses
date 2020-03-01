@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/favicon.ico}">
+    <title>精品眼镜店后台管理系统</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/fileinput.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+    <script th:src="@{/fileinput.js}"></script>
+    <script th:src="@{/jquery.validate.js}"></script>
+    <script th:src="@{/messages_zh.js}"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+
+<script>
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    };
+    $(function () {
+
+        var icons = {
+            paginationSwitchDown: 'fa-caret-square-down',
+            paginationSwitchUp: 'fa-caret-square-up',
+            refresh: 'glyphicon glyphicon-refresh',
+            toggleOff: 'fa-toggle-off',
+            toggleOn: 'fa-toggle-on',
+            columns: 'fa-th-list',
+            fullscreen: 'fa-arrows-alt',
+            detailOpen: 'glyphicon glyphicon-plus',
+            detailClose: 'glyphicon glyphicon-minus',
+            search: 'glyphicon glyphicon-search'
+        };
+
+        // 初始化表格
+        $("#bannerTable").bootstrapTable({
+            icons: icons,
+            url: '/banner/all',
+            striped: true,
+            columns: [
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'sort',
+                    title: '序号'
+                },
+                {
+                    field: 'name',
+                    title: 'banner名称'
+                },
+                {
+                    field: 'description',
+                    title: '描述信息'
+                },
+                {
+                    field: 'type',
+                    title: 'banner类型'
+                },
+                {
+                    field: 'mappingId',
+                    title: '实体名称'
+                },
+                {
+                    field: 'url',
+                    title: '预览',
+                    formatter:function (value,row) {
+                        return '<img src="'+row.url+'" style="width: 100;height: 100px;"/>'
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '添加时间'
+                },
+
+                {
+                    field: 'operate',
+                    title: '操作',
+                    width: '100px',
+                    formatter: function (value, row) {
+                        return '<a href="/banner/delete?imgName='+row.url+'&id=' + row.id + '">删除</a>'
+                    }
+                }
+
+            ],
+            // data
+            method: 'get',
+            cache: false,
+            sidePagination: 'server',
+            pageNumber: 1,
+            pageSize: 10
+        })
+        $("#bannerForm").validate({
+            debug: true, //调试模式取消submit的默认提交功能
+            errorClass: "error", //默认为错误的样式类为：error
+            focusInvalid: true, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function (form) {   //表单提交句柄,为一回调函数，带一个参数：form
+                form.submit();   //提交表单
+            },
+            rules: {
+                sort: {
+                    required: true
+                }
+            },
+            messages: {
+                sort: {
+                    required: "请填写顺序"
+                }
+            }
+        });
+        // 初始化文件上传按钮
+        $("#image").fileinput({
+            language: 'zh', //设置语言
+            allowedFileExtensions: ['jpg', 'gif', 'png'],
+            uploadAsync: true, //默认异步上传
+            showUpload: false, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            showCaption: true,//是否显示标题
+            browseClass: "btn btn-default", //按钮样式    
+            dropZoneEnabled: false,//是否显示拖拽区域
+            minFileCount: 1,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            validateInitialCount: true,
+            overwriteInitial: false,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        });
+    })
+
+    
+    function addBannerBtn() {
+
+        $(".bannerDialog").modal({
+            backdrop:'static',
+            show:true
+        })
+    }
+
+    function cancelSubmitBanner() {
+        $(".bannerDialog").modal('hide')
+        $("#bannerForm")[0].reset()
+    }
+
+    function typeChange(type) {
+
+        if (type == 'SHOP_BANNER'){
+            getOption('/shop/all');
+        }
+
+        if (type == 'GOODS_BANNER'){
+            getOption('/goods/all');
+        }
+        else {
+            $("#mappingId").empty()
+        }
+
+    }
+
+    // 获取所有门店
+    function getOption(url) {
+        $.ajax({
+            url: url,
+            type: "get",
+            success: function (data) {
+                if (data.code == 0) {
+                    $("#mappingId").empty()
+                    $.each(data.data, function (index, item) {
+                        $("#mappingId").append('<option value="' + item.id + '">' + item.name + '</option>')
+                    })
+
+                }
+            }
+        })
+    }
+
+
+</script>
+
+<body>
+
+<!--引入顶部栏-->
+<div th:replace="~{commons/bar::topBar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div th:replace="~{commons/bar::#sideBar(activeMenu='banner')}"></div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="page-header">
+                <h1>我的banner
+                    <small>banner</small>
+                </h1>
+            </div>
+            <div class="input-group col-sm-5 toolbar" style="margin-top:0px;position:relative">
+                <button type="button" class="btn btn-info" style="margin-left:3px" id=""
+                        onclick="addBannerBtn()">添加banner
+                </button>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <!--bootstrap table-->
+                <table id="bannerTable">
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--添加banner模态框-->
+    <div class="modal fade bs-example-modal-lg bannerDialog"  role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="text-align: center;">
+                <br/>
+                <h4 id="goodsFormTitle">添加banner</h4>
+                <hr>
+                <!--form 表单-->
+                <form class="form-horizontal" id="bannerForm" method="post" style="text-align: left" action="/banner/insert"
+                      enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="name" class="col-sm-3 control-label">名称:</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type" class="col-sm-3 control-label">类型:</label>
+                        <div class="col-sm-7">
+                            <select name="type" id="type" class="form-control" onchange="typeChange(this.value)">
+                                <option value="">请选择</option>
+                                <option value="SHOP_BANNER">门店BANNER</option>
+                                <option value="GOODS_BANNER">商品BANNER</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">实体：</label>
+                        <div class="col-sm-7">
+                            <select name="mappingId" id="mappingId" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="col-sm-3 control-label">描述信息:</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="description" id="description" class="form-control"
+                                   placeholder="描述信息">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sort" class="col-sm-3 control-label">顺序:</label>
+                        <div class="col-sm-7">
+                            <input type="number" name="sort" id="sort" class="form-control" placeholder="顺序">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image" class="col-sm-3 control-label">顺序:</label>
+                        <div class="col-sm-7">
+                            <input type="file" name="image" id="image" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="text-align: right">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button type="submit" class="btn btn-default">添加</button>
+                            <button type="button" class="btn btn-default " onclick="cancelSubmitBanner()">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

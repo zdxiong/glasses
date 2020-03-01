@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.wechat.WeChatGoodsMapper">
+
+    <sql id="goodsFiled">
+        g.id,
+        g.name,
+        g.nike_name,
+        g.description,
+        g.sales,
+        g.shop_id,
+        g.category_id,
+        g.brand,
+        g.stock,
+        g.discounts_price,
+        g.market_price,
+        g.hot,
+        g.recommend,
+        g.is_new,
+        g.create_time,
+        g.normal_price,
+        g.promotion,
+        i.id as iId,
+        i.mapping_id,
+        i.url,
+        i.type,
+        i.sort
+
+    </sql>
+    <resultMap id="goodsMap" type="com.xp.glasses.entity.Goods">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="nickName" column="nike_name" />
+        <result property="description" column="description" />
+        <result property="discountsPrice" column="discounts_price" />
+        <result property="marketPrice" column="market_price" />
+        <result property="normalPrice" column="normal_price" />
+        <result property="stock" column="stock" />
+        <result property="hot" column="hot" />
+        <result property="recommend" column="recommend" />
+        <result property="promotion" column="promotion" />
+        <result property="sales" column="sales" />
+        <result property="isNew" column="is_new" />
+        <result property="recommend" column="recommend" />
+        <association property="mainImage" javaType="com.xp.glasses.entity.Image">
+            <id property="id" column="iId" />
+            <result property="mappingId" column="mapping_id" />
+            <result property="url" column="url" />
+            <result property="type" column="type" />
+            <result property="sort" column="sort" />
+        </association>
+        <association property="shop" javaType="com.xp.glasses.entity.Shop">
+            <id property="id" column="shop_id"></id>
+        </association>
+    </resultMap>
+
+    <select id="recommendGoods" resultMap="goodsMap">
+        SELECT
+        <include refid="goodsFiled"/>
+        from goods g INNER JOIN image i ON  g.id = i.mapping_id and i.type= 'MAIN_GOODS' WHERE g.recommend = 1
+        ORDER BY  RAND() LIMIT 4;
+    </select>
+
+    <select id="allGoodsList" resultMap="goodsMap">
+        SELECT
+        <include refid="goodsFiled"/>
+        from goods g INNER JOIN image i ON  g.id = i.mapping_id and i.type= 'MAIN_GOODS'
+    </select>
+
+    <select id="goodsCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM goods
+    </select>
+
+    <select id="goodsDetail" resultMap="goodsMap">
+        SELECT
+        <include refid="goodsFiled"/>
+        FROM
+        goods g LEFT JOIN image i ON g.id = i.mapping_id AND i.type = 'MAIN_GOODS'
+        where g.id = #{goodsId}
+    </select>
+</mapper>

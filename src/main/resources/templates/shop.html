@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/favicon.ico}">
+    <title>xx精品眼镜店后台管理系统</title>
+    <link th:href="@{/webjars/bootstrap/3.1.1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/bootstrap/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/fileinput.css}">
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.1.1/js/bootstrap.js}"></script>
+    <script th:src="@{/fileinput.js}"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <!-- Latest compiled and minified Locales -->
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+
+<script>
+    $(function () {
+        // 初始化文件上传按钮
+        $("#img").fileinput({
+            language: 'zh',
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+            uploadAsync: true, //默认异步上传
+            showUpload: false, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            showCaption: true,//是否显示标题
+            browseClass: "btn btn-default", //按钮样式    
+            dropZoneEnabled: false,//是否显示拖拽区域
+            //minImageWidth: 50, //图片的最小宽度
+            //minImageHeight: 50,//图片的最小高度
+            //maxImageWidth: 1000,//图片的最大宽度
+            //maxImageHeight: 1000,//图片的最大高度
+            //maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+            validateInitialCount: true,
+            overwriteInitial: false,
+            previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+        });
+
+        $('#batchDelBtn').click(function () {
+            alert('该功能尚未开通')
+        })
+        $('.btn-search').click(function () {
+            alert('该功能尚未开通')
+        })
+    })
+
+
+    function imageYuLan(id) {
+        // 查询出该门店的图片信息。
+        $.ajax({
+            url: 'shopInfo',
+            type: 'get',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    // 动态添加div,并展示图片
+                    var images = data.data.images;
+                    if (images.length != 0) {
+                        $('#img_container').empty();
+                        for (var i = 0; i < images.length; i++) {
+                            $('#img_container').append('' +
+                                '<div class="col-xs-6 col-md-3">' +
+                                    '<span>序号:' + images[i].sort + '</span>&nbsp;&nbsp;' +
+                                    '<span><a href="/img/delImg?type=MAIN_SHOP&id='+images[i].id+'">移除</a></span>' +
+                                    '<a href="#" class="thumbnail" style="text-align: center">' +
+                                        '<img src="' + images[i].url + '">' +
+                                    '</a>' +
+                                '</div>')
+                        }
+                        $("#imageTitel").text(data.data.name)
+                        // 打开模态框
+                        $(".imgDialog").modal('show')
+                    }
+                    if (images.length == 0) {
+                        alert('暂无图片信息')
+                        return
+                    }
+
+                    return
+                }
+                alert(data.msg)
+            }
+        })
+    }
+
+    function triggerUpClick(id) {
+        // 查询该图片信息
+        $.ajax({
+            url: 'find',
+            data: {
+                id: id
+            },
+            type: 'get',
+            success: function (data) {
+                if (data.code == 0) {
+                    $('#mappingId').val(data.data.id)
+                    $('#shopName').text(data.data.name)
+
+                    $(".imgDialog_add").modal('show');
+                    return
+                }
+                alert(data.msg)
+            }
+        })
+    }
+</script>
+
+
+<style>
+
+</style>
+<body>
+
+<!--引入顶部栏-->
+<div th:replace="~{commons/bar::topBar}"/>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div th:replace="~{commons/bar::#sideBar(activeMenu='shop')}"></div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="page-header">
+                <h1>我的门店
+                    <small>门店管理</small>
+                </h1>
+            </div>
+            <div class="input-group col-md-3 toolbar" style="margin-top:0px;position:relative">
+                <input type="text" class="form-control" placeholder="请输入门店名称"/>
+                <span class="input-group-btn">
+                        <button class="btn btn-search">查找</button>
+                        <button class="btn btn-info" style="margin-left:3px"><a
+                                th:href="@{/shop/addOrEdit(type=1)}">添加</a></button>
+                       <button class="btn btn-warning" id="batchDelBtn" style="margin-left:3px">批量删除</button>
+                </span>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <table class="table  table-hover">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>门店</th>
+                        <th>店长</th>
+                        <th>固定电话</th>
+                        <th>移动电话</th>
+                        <th>上班时间</th>
+                        <th>下班时间</th>
+                        <th>工作日</th>
+                        <th>地址</th>
+                        <th>铺面介绍</th>
+                        <th>创建时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="shop:${pageInfo.aaData}">
+                        <td><input type="checkbox" th:value="${shop.id}"></td>
+                        <td th:text="${shop.name}"></td>
+                        <td th:text="${shop.shopkeeper}"></td>
+                        <td th:text="${shop.landLine}"></td>
+                        <td th:text="${shop.cellphone}"></td>
+                        <td th:text="${shop.startTime}"></td>
+                        <td th:text="${shop.quittingTime}"></td>
+                        <td th:text="${shop.workDay}"></td>
+                        <td th:text="${shop.address}"></td>
+                        <td th:text="${shop.description}"></td>
+                        <td th:text="${#dates.format(shop.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <div class="dropdown">
+                                <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    操作
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                    <li><a th:href="@{/shop/delete(id=${shop.id})}">删除</a></li>
+                                    <li><a th:href="@{/shop/addOrEdit(type=2,id=${shop.id})}">编辑</a></li>
+                                    <li><a th:attr="id=${shop.id}" onclick="imageYuLan(this.id)">图片预览</a></li>
+                                    <li><a th:attr="id=${shop.id}" onclick="triggerUpClick(this.id)">图片上传</a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align: center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:if="${pageInfo.page!=1}">
+                            <a th:href="@{/shop/myShop(page=${pageInfo.page-1},pageSize=15)}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="page:${#numbers.sequence(1,pageInfo.totalPate)}"
+                            th:if="${pageInfo.totalPate!=0}">
+                            <a th:href="@{/shop/myShop(page=${page},pageSize=15)}" th:text="${page}"
+                               th:if="${page} eq ${pageInfo.page}" style="background-color: #428bca;color: white"/>
+                            <a th:href="@{/shop/myShop(page=${page},pageSize=15)}" th:text="${page}"
+                               th:if="${page} ne ${pageInfo.page}" style="background-color: white"/>
+                        </li>
+                        <li th:if="${pageInfo.totalPate>pageInfo.page}">
+                            <a th:href="@{/shop/myShop(page=${pageInfo.page+1},pageSize=15)}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+        <!-- 图片预览模态框-->
+        <div class="modal fade bs-example-modal-lg imgDialog" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <br>
+                    <h4>门店：<span id="imageTitel">测试</span></h4>
+                    <hr>
+                    <div class="row" id="img_container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片添加模态框-->
+        <div class="modal fade bs-example-modal-lg imgDialog_add" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="text-align: center;">
+                    <br>
+                    <h4><span id="shopName"> 未知</span></h4>
+                    <hr>
+                    <!--form 表单-->
+                    <form class="form-horizontal" id="imageForm" method="post" th:action="@{/img/insert}"
+                          style="text-align: left" enctype="multipart/form-data">
+                        <!--隐藏域-->
+                        <input type="hidden" name="type" value="MAIN_SHOP">
+                        <input type="hidden" id="mappingId" name="mappingId" value="">
+
+                        <div class="form-group">
+                            <label for="sort" class="col-sm-4 control-label">顺序</label>
+                            <div class="col-sm-4">
+                                <input type="number" id="sort" name="sort" class="form-control" placeholder="请输入数字">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="img" class="col-sm-4 control-label">图片信息:</label>
+                            <div class="col-sm-4">
+                                <input id="img" name="img" type="file" value="上传"/>
+                                <p class="help-block">支持jpg, gif, png文件格式，每次选择一张图片进行上传</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="text-align: right">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button type="submit" class="btn btn-primary">添加</button>
+                                <button type="reset" class="btn btn-cancel">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

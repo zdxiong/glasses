@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.GoodsMapper">
+
+    <select id="count" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(*) FROM goods
+        <where>
+            <if test="categoryId !=null">
+                category_id = #{categoryId}
+            </if>
+
+            <if test="shopId!=null and shopId !=''">
+                and shop_id = #{shopId}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="goodsMap" type="com.xp.glasses.entity.Goods">
+        <id column="id" property="id"/>
+        <result property="name" column="gName"/>
+        <result property="nickName" column="nike_name"/>
+        <result property="description" column="gDesc"/>
+        <result property="sales" column="sales"/>
+        <result property="brand" column="brand"/>
+        <result property="stock" column="stock"/>
+        <result property="discountsPrice" column="discounts_price"/>
+        <result property="marketPrice" column="market_price"/>
+        <result property="hot" column="hot"/>
+        <result property="recommend" column="recommend"/>
+        <result property="isNew" column="is_new"/>
+        <result property="promotion" column="promotion"/>
+        <result property="normalPrice" column="normal_price"/>
+        <result property="createTime" column="gTime"/>
+        <association property="shop" javaType="com.xp.glasses.entity.Shop">
+            <id property="id" column="sId"/>
+            <result property="name" column="sName"/>
+            <result property="shopkeeper" column="shopkeeper"/>
+            <result property="landLine" column="land_line"/>
+            <result property="cellphone" column="cellphone"/>
+            <result property="startTime" column="start_time"/>
+            <result property="quittingTime" column="quitting_time"/>
+            <result property="workDay" column="work_day"/>
+            <result property="description" column="sDesc"/>
+            <result property="createTime" column="sTime"/>
+        </association>
+
+        <association property="category" javaType="com.xp.glasses.entity.Category">
+            <id property="id" column="cId"/>
+            <result property="name" column="cName"/>
+            <result property="parentId" column="parent_id"/>
+        </association>
+
+        <association property="mainImage" javaType="com.xp.glasses.entity.Image">
+            <id property="id" column="iId"/>
+            <result property="mappingId" column="mapping_id"/>
+            <result property="url" column="url"/>
+            <result property="type" column="type"/>
+            <result property="sort" column="sort"/>
+        </association>
+    </resultMap>
+
+
+    <select id="select" parameterType="map" resultMap="goodsMap">
+        SELECT
+        g.id,
+        g.name as gName,
+        g.nike_name,
+        g.description as gDesc,
+        g.sales,
+        g.shop_id,
+        g.category_id,
+        g.brand,
+        g.stock,
+        g.discounts_price,
+        g.market_price,
+        g.hot,
+        g.recommend,
+        g.is_new,
+        g.create_time as gTime,
+        g.normal_price,
+        g.promotion,
+        c.id as cId,
+        c.parent_id,
+        c.name as cName,
+
+        s.id as sId,
+        s.name as sName,
+        s.shopkeeper,
+        s.land_line,
+        s.cellphone,
+        s.start_time,
+        s.quitting_time,
+        s.work_day,
+        s.address,
+        s.description as sDesc,
+        s.create_time as sTime,
+
+        i.id as iId,
+        i.mapping_id,
+        i.url,
+        i.type,
+        i.sort
+        FROM
+        goods g
+        LEFT JOIN category c ON g.category_id = c.id
+        LEFT JOIN shop s ON g.shop_id = s.id
+        LEFT JOIN image i ON i.mapping_id = g.id AND i.type='MAIN_GOODS'
+        <where>
+            <if test="goodsId != null and goodsId != ''">
+                g.id = #{goodsId}
+            </if>
+            <if test="categoryId !=null and categoryId !=''">
+                and g.category_id = #{categoryId}
+            </if>
+            <if test="shopId!=null and shopId!=''">
+                and g.shop_id = #{shopId}
+            </if>
+        </where>
+        ORDER BY g.create_time DESC
+
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+
+
+    </select>
+
+
+    <resultMap id="specification" type="com.xp.glasses.entity.GoodsSpecification">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="stock" column="stock"/>
+        <result property="attachPrice" column="attachPrice"/>
+        <association property="img" javaType="com.xp.glasses.entity.Image">
+            <id property="id" column="imageId"/>
+            <result property="mappingId" column="mapping_id"></result>
+            <result property="url" column="url"></result>
+            <result property="type" column="type"></result>
+            <result property="sort" column="sort"></result>
+        </association>
+    </resultMap>
+
+    <select id="specifications" resultMap="specification" parameterType="string">
+      SELECT
+        sp.id,
+        sp.name,
+        sp.value,
+        sp.stock,
+        sp.attach_price as attachPrice,
+       img.id as imageId,
+       img.mapping_id,
+       img.url,
+       img.type,
+       img.sort
+      FROM specification sp LEFT JOIN image img ON sp.id = img.mapping_id AND img.type = 'SPECIFICATION'
+      where goods_id = #{goodsId}
+
+    </select>
+
+    <select id="all" resultType="com.xp.glasses.entity.Goods">
+        SELECT * FROM goods
+    </select>
+
+
+    <insert id="insert" parameterType="com.xp.glasses.entity.form.GoodsForm">
+        INSERT INTO goods
+        (id,
+         name,
+         nike_name,
+         description,
+         sales,
+         shop_id,
+         category_id,
+         brand,
+         stock,
+         discounts_price,
+         market_price,
+         hot,
+         recommend,
+         is_new,
+         create_time,
+         normal_price,
+         promotion)
+         values (
+         #{id},
+         #{name},
+         #{nickName},
+         #{description},
+         #{sales},
+         #{shopId},
+         #{categoryId},
+         #{brand},
+         #{stock},
+         #{discountsPrice},
+         #{marketPrice},
+         #{hot},
+         #{recommend},
+         #{isNew},
+         #{createTime},
+         #{normalPrice},
+         #{promotion}
+         )
+    </insert>
+
+
+    <delete id="deleteById" parameterType="string">
+        DELETE FROM goods where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.xp.glasses.entity.form.GoodsForm">
+        update goods
+        <set>
+            <if test="name!=null and name !=''">
+                name = #{name} ,
+            </if>
+
+            <if test="nickName!=null and nickName !=''">
+                nike_name = #{nickName} ,
+            </if>
+
+            <if test="description!=null and description !=''">
+                description = #{description} ,
+            </if>
+
+            <if test="sales!=null">
+                sales = #{sales} ,
+            </if>
+            <if test="shopId!=null and shopId !=''">
+                shop_id = #{shopId} ,
+            </if>
+            <if test="categoryId!=null and categoryId !=''">
+                category_id = #{categoryId} ,
+            </if>
+            <if test="brand!=null and brand !=''">
+                brand = #{brand} ,
+            </if>
+            <if test="stock!=null">
+                stock = #{stock} ,
+            </if>
+            <if test="discountsPrice!=null">
+                discounts_price = #{discountsPrice} ,
+            </if>
+            <if test="marketPrice!=null">
+                market_price = #{marketPrice} ,
+            </if>
+            <if test="hot!=null">
+                hot = #{hot} ,
+            </if>
+            <if test="recommend!=null">
+                recommend = #{recommend} ,
+            </if>
+            <if test="isNew!=null">
+                is_new = #{isNew} ,
+            </if>
+            <if test="normalPrice!=null">
+                normal_price = #{normalPrice} ,
+            </if>
+            <if test="promotion!=null">
+                promotion = #{promotion}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
