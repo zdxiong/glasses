@@ -1,6 +1,9 @@
 package com.xp.glasses.entity;
 
 import lombok.Data;
+import org.springframework.util.StringUtils;
+
+import java.util.Objects;
 
 
 /**
@@ -9,6 +12,7 @@ import lombok.Data;
  * @author xiongzhendong
  * @date 2010/01/10
  */
+
 @Data
 public class GoodsSpecification<T> {
 
@@ -49,7 +53,23 @@ public class GoodsSpecification<T> {
     private Integer attachPrice;
 
 
-
-
     private String imageUrl;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null){
+            return false;
+        }
+        GoodsSpecification goodsSpecification = (GoodsSpecification) o;
+        if (goodsSpecification.getId().equals(this.getId())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, value, goods, img, stock, attachPrice, imageUrl);
+    }
 }

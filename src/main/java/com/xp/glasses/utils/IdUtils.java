@@ -12,7 +12,7 @@ public class IdUtils {
      * @return
      */
     public static String initId() {
-        return UUID.randomUUID().toString().replace("-", "");
+       return UUID.randomUUID().toString().replace("-", "").toUpperCase();
     }
 
 }

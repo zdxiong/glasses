@@ -34,6 +34,11 @@ public class WeChatOrderController {
             return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择商品");
         }
 
+
+        if (orderForm.getAddressId() == null){
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择收货地址");
+        }
+
         return weChatOrderService.createOrder(orderForm);
     }
 }

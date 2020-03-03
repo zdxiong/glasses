@@ -1,8 +1,7 @@
 package com.xp.glasses.entity.order;
 
+import com.xp.glasses.entity.Goods;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * 订单商品
@@ -10,7 +9,7 @@ import java.util.Date;
  * @author Mrxiong
  */
 @Data
-public class OrderGoodsItemDto {
+public class OrderItem {
 
     /**
      * 主键ID
@@ -32,9 +31,19 @@ public class OrderGoodsItemDto {
      */
     private Integer num;
 
+    /**
+     *  单价
+     */
+    private Long unitPrice;
 
-    private Date createTime;
+    /**
+     * 商品属性
+     */
+    private String attrs;
 
-    private Date updateTime;
+
+    // 具象商品
+    private Goods goods;
+
 
 }

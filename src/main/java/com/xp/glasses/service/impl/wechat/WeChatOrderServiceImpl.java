@@ -5,9 +5,8 @@ import com.xp.glasses.entity.Goods;
 import com.xp.glasses.entity.GoodsSpecification;
 import com.xp.glasses.entity.form.CreateOrderForm;
 import com.xp.glasses.entity.form.OrderGoodsParam;
-import com.xp.glasses.entity.order.OrderDto;
-import com.xp.glasses.entity.order.OrderGoodsItemDto;
-import com.xp.glasses.entity.order.OrderGoodsItemSpeDto;
+import com.xp.glasses.entity.order.Order;
+import com.xp.glasses.entity.order.OrderItem;
 import com.xp.glasses.mapper.wechat.WeChatOrderMapper;
 import com.xp.glasses.service.GoodsService;
 import com.xp.glasses.service.SpecificationService;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Mrxiong
@@ -58,19 +58,14 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
         Long unitPrice = 0L;
 
         // 订单包含的商品信息
-        List<OrderGoodsItemDto> orderGoodsItems = new ArrayList<>();
+        List<OrderItem> orderGoodsItems = new ArrayList<>();
 
-        // 订单包含的商品的规格
-        List<OrderGoodsItemSpeDto> orderGoodsItemSpeDtos = new ArrayList<>();
+        OrderItem orderItem;
 
-        OrderGoodsItemDto orderGoodsItemDto;
-
-        OrderGoodsItemSpeDto orderGoodsItemSpeDto;
-
+        StringBuffer attrBuffer;
         for (OrderGoodsParam goodsParam : goodsParams) {
             // 数量
             Integer num = goodsParam.getNum();
-
             queryMap = new HashMap(2);
             queryMap.put("goodsId", goodsParam.getGoodsId());
             List<Goods> goodsList = goodsService.select(queryMap);
@@ -79,17 +74,6 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
             }
             // 商品
             goods = goodsList.get(0);
-
-            String goodsItemId = IdUtils.initId();
-            orderGoodsItemDto = new OrderGoodsItemDto();
-            orderGoodsItemDto.setGoodsId(goods.getId());
-            orderGoodsItemDto.setId(goodsItemId);
-            orderGoodsItemDto.setOrderNo(orderNo);
-            orderGoodsItemDto.setNum(num);
-            orderGoodsItemDto.setCreateTime(nowTime);
-            orderGoodsItemDto.setUpdateTime(nowTime);
-            orderGoodsItems.add(orderGoodsItemDto);
-
             // 促销商品
             if (goods.getPromotion() == 1) {
                 // 折扣价格
@@ -107,41 +91,65 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
                 }
                 unitPrice += normalPrice;
             }
-
+            List<GoodsSpecification> spes = new ArrayList<>();
             // 获取规格
             List<String> speIds = goodsParam.getSpeIds();
 
-            List<GoodsSpecification> spes = specificationService.selectBySpeIds(speIds);
+            if (!CollectionUtils.isEmpty(speIds)){
+                 spes = specificationService.selectBySpeIds(speIds);
+            }
 
+            // 获取该商品的所有规格
+            List<GoodsSpecification> goodsSpes = specificationService.getGoodsSpes(goodsParam.getGoodsId());
+            Map<String, List<GoodsSpecification>> speGroup = goodsSpes.stream().
+                    collect(Collectors.groupingBy(GoodsSpecification::getName));
+            boolean flag = false;
+            for (String speName:speGroup.keySet()){
+                List<GoodsSpecification> specifications = speGroup.get(speName);
+                for (GoodsSpecification specification : specifications) {
+                    if (spes.contains(specification)){
+                        flag = true;
+                        continue;
+                    }
+                }
+                if (!flag){
+                    return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择商品:"+goods.getName()+"的"+speName);
+                }
+                flag = false;
+            }
+
+            attrBuffer = new StringBuffer();
             for (GoodsSpecification spe : spes) {
                 Integer attachPrice = spe.getAttachPrice();
                 if (null == attachPrice) {
                     return BaseResponse.build(ResponseCode.FAIL, "商品参数异常,请联系店主啦~");
                 }
-
                 unitPrice += attachPrice;
+                attrBuffer.append(spe.getName()).append(":").append(spe.getValue()).append(";");
 
-                orderGoodsItemSpeDto = new OrderGoodsItemSpeDto();
-
-                orderGoodsItemSpeDto.setId(IdUtils.initId());
-                orderGoodsItemSpeDto.setName(spe.getName());
-                orderGoodsItemSpeDto.setValue((String) spe.getValue());
-                orderGoodsItemSpeDto.setOrderGoodsItemId(goodsItemId);
-                orderGoodsItemSpeDto.setCreateTime(nowTime);
-                orderGoodsItemSpeDto.setUpdateTime(nowTime);
-                orderGoodsItemSpeDtos.add(orderGoodsItemSpeDto);
             }
 
             // 计算总价
             totalPrice += unitPrice * num;
 
+            String goodsItemId = IdUtils.initId();
+            orderItem = new OrderItem();
+            orderItem.setGoodsId(goods.getId());
+            orderItem.setId(goodsItemId);
+            orderItem.setOrderNo(orderNo);
+            orderItem.setNum(num);
+            orderItem.setUnitPrice(unitPrice);
+            orderItem.setAttrs(attrBuffer.toString());
+            orderGoodsItems.add(orderItem);
+
             // 再次将单价置0,参与下一次计算
             unitPrice = 0L;
 
+
         }
 
-        OrderDto orderDto = initMainOrder(orderNo,orderForm.getRemarks(),
-                "f4873a44506a4ba4b2b42904a741c7c4", nowTime,totalPrice);
+        Order orderDto = initMainOrder(orderNo,orderForm.getRemarks(),
+                "f4873a44506a4ba4b2b42904a741c7c4", nowTime,totalPrice,orderForm.getAddressId());
 
         // 保存订单主表
         saveOrderMainInfo(orderDto);
@@ -151,34 +159,28 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
             saveOrderGoodsItems(orderGoodsItems);
         }
 
-        // 保存规格
-        if (!CollectionUtils.isEmpty(orderGoodsItemSpeDtos)){
-            saveOrderGoodsSpes(orderGoodsItemSpeDtos);
-        }
         return BaseResponse.build();
     }
 
-    private void saveOrderGoodsSpes(List<OrderGoodsItemSpeDto> orderGoodsItemSpeDtos) {
-        weChatOrderMapper.saveOrderGoodsSpes(orderGoodsItemSpeDtos);
-    }
-
-    private void saveOrderGoodsItems(List<OrderGoodsItemDto> orderGoodsItems) {
-        weChatOrderMapper.saveOrderGoodsItems(orderGoodsItems);
+    private void saveOrderGoodsItems(List<OrderItem> orderItems) {
+        weChatOrderMapper.saveOrderGoodsItems(orderItems);
     }
 
 
-    private void saveOrderMainInfo(OrderDto orderDto) {
+    private void saveOrderMainInfo(Order orderDto) {
         weChatOrderMapper.saveOrderMainInfo(orderDto);
     }
 
 
-    private OrderDto initMainOrder(String orderNo, String remarks, String userId, Date createTime, Long totalPrice) {
-        OrderDto orderDto = new OrderDto();
+    private Order initMainOrder(String orderNo, String remarks, String userId,
+                                Date createTime, Long totalPrice,String addressId) {
+        Order orderDto = new Order();
 
         orderDto.setOrderNo(orderNo);
         orderDto.setRemarks(remarks);
         // 设置订单未支付
-        orderDto.setOrderStatus(OrderDto.OrderStatus.NO_PAY);
+        orderDto.setOrderStatus(Order.OrderStatus.NO_PAY);
+        orderDto.setAddressId(addressId);
         // 物流
 //        orderDto.setLogisticsNo(null);
         // 门店
@@ -189,7 +191,6 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
 //        orderDto.setWePayNo(null);
         // 记录时间
         orderDto.setCreateTime(createTime);
-        orderDto.setUpdateTime(createTime);
         orderDto.setOrderPrice(totalPrice);
         return orderDto;
     }

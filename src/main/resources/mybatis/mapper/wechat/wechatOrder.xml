@@ -3,19 +3,22 @@
 <mapper namespace="com.xp.glasses.mapper.wechat.WeChatOrderMapper">
 
 
-    <insert id="saveOrderMainInfo" parameterType="com.xp.glasses.entity.order.OrderDto">
+    <insert id="saveOrderMainInfo" parameterType="com.xp.glasses.entity.order.Order">
         INSERT INTO `order`
         (
          order_no,
          wepay_no,
          logistics_no,
          user_id,
+         address_id,
          shop_id,
          order_price,
          remarks,
          order_status,
          create_time,
-         update_time
+         pay_time,
+         send_time,
+         complete_time
          )
          values
         (
@@ -23,38 +26,28 @@
         #{wePayNo},
         #{logisticsNo},
         #{userId},
+        #{addressId},
         #{shopId},
         #{orderPrice},
         #{remarks},
         #{orderStatus},
         #{createTime},
-        #{updateTime}
+        #{payTime},
+        #{sendTime},
+        #{completeTime}
         )
     </insert>
     <insert id="saveOrderGoodsItems" parameterType="list">
         INSERT INTO
-        order_goods_item
-        (id, order_no, goods_id, num, create_time, update_time) VALUES
-        <foreach collection="list" separator="," index="index" item="item" open="(" close=")">
-            #{item.id},
+        order_item
+        (id, order_no, goods_id, num, unit_price, attrs) VALUES
+        <foreach collection="list" separator="," index="index" item="item">
+            (#{item.id},
             #{item.orderNo},
             #{item.goodsId},
             #{item.num},
-            #{item.createTime},
-            #{item.updateTime}
-        </foreach>
-    </insert>
-    <insert id="saveOrderGoodsSpes" parameterType="list">
-        INSERT INTO order_goods_item_spe
-        (id, order_goods_item_id, name,value, create_time, update_time)
-        values
-        <foreach collection="list" separator="," index="index" item="item">
-            (#{item.id},
-            #{item.orderGoodsItemId},
-            #{item.name},
-            #{item.value},
-            #{item.createTime},
-            #{item.updateTime})
+            #{item.unitPrice},
+            #{item.attrs})
         </foreach>
     </insert>
 </mapper>

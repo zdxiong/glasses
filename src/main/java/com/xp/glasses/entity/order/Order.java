@@ -1,16 +1,21 @@
 package com.xp.glasses.entity.order;
 
+import com.xp.glasses.entity.ReceiveAddr;
+import com.xp.glasses.entity.Shop;
+import com.xp.glasses.entity.User;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单DTO
  * @author Mrxiong
  */
 @Data
-public class OrderDto {
+public class Order {
 
+    /**************************************表字段*********************************************/
     /**
      * 订单编号,主键ID
      */
@@ -30,6 +35,13 @@ public class OrderDto {
      *  用户Id
      */
     private String  userId;
+
+
+    /**
+     * 收货地址ID
+     */
+    private String addressId;
+
 
     /**
      * 门店ID
@@ -57,11 +69,30 @@ public class OrderDto {
     private Date createTime;
 
     /**
-     * 修改时间
+     * 付款时间
      */
-    private Date updateTime;
+    private Date payTime;
+
+    /**
+     * 发货时间
+     */
+    private Date sendTime;
+
+    /**
+     * 成交时间
+     */
+    private Date completeTime;
+
+    /**************************************表字段 end*********************************************/
 
 
+    private User user;
+
+    private ReceiveAddr addr;
+
+    private Shop shop;
+
+    private List<OrderItem> orderItems;
 
     public enum OrderStatus{
         /**

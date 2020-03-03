@@ -17,6 +17,12 @@ public class CreateOrderForm {
     private List<OrderGoodsParam> goods;
 
     /**
+     * 收货地址ID
+     */
+
+    private String addressId;
+
+    /**
      * 备注
      */
     private String remarks;
