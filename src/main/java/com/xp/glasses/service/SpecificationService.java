@@ -14,4 +14,11 @@ public interface SpecificationService extends BaseService {
      * @return
      */
     List<GoodsSpecification> getGoodsSpes(String goodsId);
+
+    /**
+     * 根据规格ID列表 获取多个规格详情
+     * @param speIds
+     * @return
+     */
+    List<GoodsSpecification> selectBySpeIds(List<String> speIds);
 }

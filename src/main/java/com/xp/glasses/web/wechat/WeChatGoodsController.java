@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/weChat/goods/")
-public class WecCatGoodsController {
+public class WeChatGoodsController {
 
     @Autowired
     WeChatGoodsService weChatGoodsService;

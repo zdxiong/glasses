@@ -65,6 +65,26 @@
         where sp.goods_id = #{goodsId}
     </select>
 
+
+    <select id="selectBySpeIds" resultType="com.xp.glasses.entity.GoodsSpecification" parameterType="list">
+        SELECT
+        id,
+        name,
+        value,
+        stock,
+        goods_id as goodsId,
+        attach_price as attachPrice
+
+        FROM specification
+        <where>
+          id in (
+            <foreach collection="list" item="id" index="index" separator=",">
+                 #{id}
+            </foreach>
+            )
+        </where>
+    </select>
+
     <delete id="deleteById" parameterType="string">
         DELETE FROM specification where id = #{id}
     </delete>

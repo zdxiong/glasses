@@ -85,4 +85,9 @@ public class SpecificationServiceImpl extends BaseServiceImpl implements Specifi
     public List<GoodsSpecification> getGoodsSpes(String goodsId) {
         return specificationMapper.getGoodsSpes( goodsId);
     }
+
+    @Override
+    public List<GoodsSpecification> selectBySpeIds(List<String> speIds) {
+        return specificationMapper.selectBySpeIds(speIds);
+    }
 }

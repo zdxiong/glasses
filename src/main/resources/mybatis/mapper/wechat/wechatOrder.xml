@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.wechat.WeChatOrderMapper">
+
+
+    <insert id="saveOrderMainInfo" parameterType="com.xp.glasses.entity.order.OrderDto">
+        INSERT INTO `order`
+        (
+         order_no,
+         wepay_no,
+         logistics_no,
+         user_id,
+         shop_id,
+         order_price,
+         remarks,
+         order_status,
+         create_time,
+         update_time
+         )
+         values
+        (
+        #{orderNo},
+        #{wePayNo},
+        #{logisticsNo},
+        #{userId},
+        #{shopId},
+        #{orderPrice},
+        #{remarks},
+        #{orderStatus},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+    <insert id="saveOrderGoodsItems" parameterType="list">
+        INSERT INTO
+        order_goods_item
+        (id, order_no, goods_id, num, create_time, update_time) VALUES
+        <foreach collection="list" separator="," index="index" item="item" open="(" close=")">
+            #{item.id},
+            #{item.orderNo},
+            #{item.goodsId},
+            #{item.num},
+            #{item.createTime},
+            #{item.updateTime}
+        </foreach>
+    </insert>
+    <insert id="saveOrderGoodsSpes" parameterType="list">
+        INSERT INTO order_goods_item_spe
+        (id, order_goods_item_id, name,value, create_time, update_time)
+        values
+        <foreach collection="list" separator="," index="index" item="item">
+            (#{item.id},
+            #{item.orderGoodsItemId},
+            #{item.name},
+            #{item.value},
+            #{item.createTime},
+            #{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>
