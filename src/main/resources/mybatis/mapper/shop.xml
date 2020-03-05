@@ -96,6 +96,28 @@
 
          FROM shop s inner join image img ON s.id = img.mapping_id and type = 'MAIN_SHOP' and s.id = #{id}
     </select>
+    <select id="getOne" resultMap="shopRes">
+        SELECT
+        s.id,
+        s.name,
+        s.shopkeeper,
+        s.land_line,
+        s.cellphone,
+        s.start_time,
+        s.quitting_time,
+        s.work_day,
+        s.address,
+        s.description,
+        s.create_time,
+        img.id as iId,
+        img.mapping_id,
+        img.url,
+        img.type,
+        img.sort
+        FROM
+        shop s INNER JOIN image img ON s.id = img.mapping_id AND img.type = 'MAIN_SHOP'
+
+    </select>
 
     <delete id="deleteById" parameterType="string">
         DELETE FROM shop where id = #{id}

@@ -9,7 +9,7 @@
 
     <select id="selectByWeChatId" resultType="com.xp.glasses.entity.User">
         SELECT
-         id,
+        id,
         username as userName,
         password,
         idcard as idCard,
@@ -20,9 +20,9 @@
         email,
         createtime as createTime,
         updatetime as updateTime,
-        gender
-
-
+        gender,
+        addr,
+        language
         FROM glasses.users where wechat = #{openid}
     </select>
 
@@ -39,7 +39,10 @@
                 phone,
                 email,
                 createtime,
-                updatetime
+                updatetime,
+                gender,
+                addr,
+                language
                 )
                  values (
                   #{id},
@@ -52,8 +55,54 @@
                   #{phone},
                   #{email},
                   #{createTime},
-                  #{updateTime}
+                  #{updateTime},
+                  #{gender},
+                  #{addr},
+                  #{language}
                 )
-
     </insert>
+
+
+    <update id="update" parameterType="com.xp.glasses.entity.User">
+        UPDATE users
+        <set>
+            <if test="userName!=null and userName!=''">
+                username = #{userName},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="idCard!=null and idCard!=''">
+                idcard = #{idCard},
+            </if>
+            <if test="avatar!=null and avatar!=''">
+                avatar = #{avatar},
+            </if>
+            <if test="type!=null">
+                type = #{type},
+            </if>
+            <if test="weChat!=null and weChat!=''">
+                wechat = #{weChat},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="email!=null and email!=''">
+                email = #{email},
+            </if>
+            <if test="addr!=null and addr!=''">
+                addr = #{addr},
+            </if>
+            <if test="language!=null and language!=''">
+                language = #{language},
+            </if>
+            <if test="gender!=null">
+                gender = #{gender},
+            </if>
+            <if test="updateTime!=null">
+                updatetime = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

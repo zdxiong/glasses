@@ -15,9 +15,13 @@ spring:
       - file:${file-path}
   thymeleaf:
     cache: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
 mybatis:
   config-location: classpath:/mybatis/mybatis.cfg.xml
   mapper-locations: classpath:/mybatis/mapper/**/*.xml
+
 
 
 ---

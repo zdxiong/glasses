@@ -55,6 +55,15 @@ public class User {
     private String email;
 
     /**
+     * 位置(微信提供的位置信息)
+     */
+    private String addr;
+
+    /**
+     * 语言
+     */
+    private String language;
+    /**
      * 性别
      */
     private Integer gender;

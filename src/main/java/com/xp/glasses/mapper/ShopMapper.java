@@ -24,4 +24,10 @@ public interface ShopMapper extends BaseMapper {
     void deleteByIds(List<String> ids);
 
     Shop shopInfoById(String id);
+
+    /**
+     * 获取一个门店
+     * @return
+     */
+    List<Shop> getOne();
 }
