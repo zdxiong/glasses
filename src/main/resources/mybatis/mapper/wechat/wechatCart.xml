@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.wechat.WeChatCartMapper">
+
+
+    <insert id="joinCart" parameterType="com.xp.glasses.entity.car.BuyCar">
+        INSERT INTO
+        buycar
+        (
+         id,
+         user_id,
+         goods_id,
+         num,
+         choose,
+         create_time,
+         update_time,
+         status
+        )
+        values
+        (
+         #{id},
+         #{userId},
+         #{goodsId},
+         #{num},
+         #{choose},
+         #{createTime},
+         #{updateTime},
+         #{status}
+        )
+    </insert>
+    <insert id="joinCartItems" parameterType="list">
+        INSERT INTO buycar_item
+        (car_id, spe_id) VALUES
+
+        <foreach collection="list" item="item" separator="," index="index">
+            (
+            #{item.carId},
+            #{item.speId}
+            )
+        </foreach>
+    </insert>
+    <update id="updateBuyCart" parameterType="com.xp.glasses.entity.car.BuyCar">
+        UPDATE buycar
+
+        <set>
+            <if test="userId!=null and userId!=''">
+                user_id = #{userId},
+            </if>
+            <if test="goodsId!=null and goodsId!=''">
+                goods_id = #{goodsId},
+            </if>
+            <if test="num!=null">
+                num = #{num},
+            </if>
+            <if test="choose!=null">
+                choose = #{choose},
+            </if>
+            <if test="createTime!=null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <resultMap id="buyCarMap" type="com.xp.glasses.entity.car.BuyCar">
+        <id  property="id" column="id"></id>
+        <result property="userId" column="user_id" />
+        <result property="goodsId" column="goods_id" />
+        <result property="num" column="num" />
+        <result property="choose" column="choose" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="status" column="status" />
+        <collection property="buyCarItems" ofType="com.xp.glasses.entity.car.BuyCarItem">
+            <result property="carId" column="car_id" />
+            <result property="speId" column="spe_id" />
+        </collection>
+    </resultMap>
+
+    <select id="getUserCartGoods" resultMap="buyCarMap">
+        SELECT
+        car.id,
+        car.user_id,
+        car.goods_id,
+        car.num,
+        car.choose,
+        car.create_time,
+        car.update_time,
+        car.status,
+        item.car_id,
+        item.spe_id
+        FROM buycar  car LEFT JOIN buycar_item item ON car.id = item.car_id
+        WHERE car.goods_id = #{goodsId} AND car.user_id = #{userId} AND car.status = 1
+    </select>
+
+</mapper>

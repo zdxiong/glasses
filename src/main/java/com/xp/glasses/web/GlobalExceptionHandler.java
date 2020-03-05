@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class})
     @ResponseBody
     public BaseResponse globalErrorHandler(Exception ce) {
-        ce.printStackTrace();
         logger.error("系统错误：{}", ce.getMessage());
         BaseResponse response = BaseResponse.build(ResponseCode.FAIL, "系统未知错误", null);
         return response;

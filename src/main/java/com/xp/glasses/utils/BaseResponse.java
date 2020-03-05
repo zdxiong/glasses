@@ -78,4 +78,9 @@ public class BaseResponse<T> {
         BaseResponse response = new BaseResponse(ResponseCode.SUCCESS,"success",data);
         return response;
     }
+
+    public static <T> BaseResponse build(String errorMsg) {
+        BaseResponse response = new BaseResponse(ResponseCode.FAIL,errorMsg,null);
+        return response;
+    }
 }
