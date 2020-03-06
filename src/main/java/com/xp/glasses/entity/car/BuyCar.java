@@ -1,5 +1,7 @@
 package com.xp.glasses.entity.car;
 
+import com.xp.glasses.entity.Goods;
+import com.xp.glasses.entity.GoodsSpecification;
 import lombok.Data;
 
 import java.util.Date;
@@ -60,5 +62,26 @@ public class BuyCar {
 
 
     private List<BuyCarItem> buyCarItems;
+
+    /**
+     * 商品
+     */
+    private Goods goods;
+
+    /**
+     * 规格
+     */
+    private List<GoodsSpecification> spes;
+
+    /**
+     * 规格属性
+     */
+    private String speAttr;
+
+    /**
+     * 单价
+     */
+    private Long unitPrice;
+
 
 }

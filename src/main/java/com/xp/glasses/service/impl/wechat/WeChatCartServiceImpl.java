@@ -1,11 +1,11 @@
 package com.xp.glasses.service.impl.wechat;
 
+import com.xp.glasses.config.ServerConfig;
 import com.xp.glasses.constant.ResponseCode;
 import com.xp.glasses.entity.Goods;
 import com.xp.glasses.entity.GoodsSpecification;
-import com.xp.glasses.entity.car.BuyCar;
-import com.xp.glasses.entity.car.BuyCarItem;
-import com.xp.glasses.entity.car.JoinBuyCarForm;
+import com.xp.glasses.entity.Image;
+import com.xp.glasses.entity.car.*;
 import com.xp.glasses.mapper.wechat.WeChatCartMapper;
 import com.xp.glasses.service.GoodsService;
 import com.xp.glasses.service.SpecificationService;
@@ -39,6 +39,9 @@ public class WeChatCartServiceImpl implements WeChatCartService {
 
     @Autowired
     SpecificationService specificationService;
+
+    @Autowired
+    ServerConfig serverConfig;
 
     @Override
     public BaseResponse joinCart(JoinBuyCarForm joinBuyCarForm) {
@@ -130,4 +133,73 @@ public class WeChatCartServiceImpl implements WeChatCartService {
 
     }
 
+
+    @Override
+    public BaseResponse cartGoods(String userId) {
+        if (userService.selectById(userId) == null) {
+            return BaseResponse.build("非法用户");
+        }
+        List<BuyCar> carGoodsList = weChatCartMapper.cartGoods(userId);
+        StringBuffer attrBuffer;
+        // 价格
+        Long basePrice = 0L;
+        Long attachPrice = 0L;
+        for (BuyCar buyCar : carGoodsList) {
+            attrBuffer = new StringBuffer();
+            List<GoodsSpecification> spes = buyCar.getSpes();
+            for (GoodsSpecification spe : spes) {
+                // 设置属性
+                attrBuffer.append(spe.getValue() + "/");
+                attachPrice += spe.getAttachPrice();
+            }
+            buyCar.setSpeAttr(attrBuffer.toString());
+            Image mainImage = buyCar.getGoods().getMainImage();
+            mainImage.setUrl(serverConfig.imageRealUlr(mainImage.getUrl()));
+            Goods goods = buyCar.getGoods();
+            Integer promotion = goods.getPromotion();
+
+            if (promotion == 1) {
+                if (goods.getDiscountsPrice() == null) {
+                    return BaseResponse.build("系统错误");
+                }
+                basePrice = goods.getDiscountsPrice();
+            }
+
+            if (promotion == 0) {
+                if (goods.getNormalPrice() == null) {
+                    return BaseResponse.build("系统错误");
+                }
+                basePrice = goods.getNormalPrice();
+            }
+            // 单价
+            buyCar.setUnitPrice(basePrice + attachPrice);
+            basePrice = 0L;
+            attachPrice = 0L;
+        }
+        // 设置总价
+        Long totalPrice = 0L;
+        Map<Integer, List<BuyCar>> chooseMap = carGoodsList.stream().collect(Collectors.groupingBy(BuyCar::getChoose));
+        List<BuyCar> chooseGoods = chooseMap.get(1);
+        if (!CollectionUtils.isEmpty(chooseGoods)){
+            for (BuyCar good : chooseGoods) {
+                totalPrice += good.getNum() * good.getUnitPrice();
+            }
+        }
+        BuyCarData buyCarData = new BuyCarData();
+        buyCarData.setTotalPrice(totalPrice);
+        buyCarData.setCarGoodsList(carGoodsList);
+        return BaseResponse.build(buyCarData);
+    }
+
+    @Override
+    public BaseResponse modifyBuycar(ModifyCarParam carParam) {
+        weChatCartMapper.modifyBuycar(carParam);
+        return BaseResponse.build();
+    }
+
+    @Override
+    public BaseResponse deleteBuycar(String id) {
+        weChatCartMapper.deleteBuycar(id);
+        return BaseResponse.build();
+    }
 }

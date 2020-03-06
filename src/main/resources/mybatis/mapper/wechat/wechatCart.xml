@@ -67,19 +67,34 @@
         </set>
         where id = #{id}
     </update>
+    <update id="modifyBuycar" parameterType="com.xp.glasses.entity.car.ModifyCarParam">
+        UPDATE buycar
+        <set>
+            <if test="num!=null">
+                num=#{num},
+            </if>
+            <if test="choose!=null">
+                choose=#{choose},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteBuycar">
+        DELETE car,item FROM buycar car LEFT JOIN buycar_item item ON car.id = item.car_id WHERE car.id = #{id}
+    </delete>
 
     <resultMap id="buyCarMap" type="com.xp.glasses.entity.car.BuyCar">
-        <id  property="id" column="id"></id>
-        <result property="userId" column="user_id" />
-        <result property="goodsId" column="goods_id" />
-        <result property="num" column="num" />
-        <result property="choose" column="choose" />
-        <result property="createTime" column="create_time" />
-        <result property="updateTime" column="update_time" />
-        <result property="status" column="status" />
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="num" column="num"/>
+        <result property="choose" column="choose"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
         <collection property="buyCarItems" ofType="com.xp.glasses.entity.car.BuyCarItem">
-            <result property="carId" column="car_id" />
-            <result property="speId" column="spe_id" />
+            <result property="carId" column="car_id"/>
+            <result property="speId" column="spe_id"/>
         </collection>
     </resultMap>
 
@@ -97,6 +112,95 @@
         item.spe_id
         FROM buycar  car LEFT JOIN buycar_item item ON car.id = item.car_id
         WHERE car.goods_id = #{goodsId} AND car.user_id = #{userId} AND car.status = 1
+    </select>
+
+    <resultMap id="userCarGoodsMap" type="com.xp.glasses.entity.car.BuyCar">
+        <id property="id" column="cId" />
+        <result property="userId" column="user_id" />
+        <result property="goodsId" column="goods_id" />
+        <result property="num" column="num" />
+        <result property="choose" column="choose" />
+        <result property="createTime" column="cCreateTime" />
+        <result property="updateTime" column="cUpdateTime" />
+        <result property="status" column="status" />
+        <association property="goods" javaType="com.xp.glasses.entity.Goods">
+            <id property="id" column="gId" />
+            <result property="name" column="gName" />
+            <result property="nickName" column="nike_name" />
+            <result property="description" column="description" />
+            <result property="sales" column="sales" />
+            <result property="brand" column="brand" />
+            <result property="stock" column="stock" />
+            <result property="discountsPrice" column="discounts_price" />
+            <result property="marketPrice" column="market_price" />
+            <result property="hot" column="hot" />
+            <result property="recommend" column="recommend" />
+            <result property="isNew" column="is_new" />
+            <result property="createTime" column="gCreateTime" />
+            <result property="normalPrice" column="normal_price" />
+            <result property="promotion" column="promotion" />
+            <association property="mainImage" javaType="com.xp.glasses.entity.Image">
+                <id property="id" column="iId" />
+                <result property="mappingId" column="mapping_id" />
+                <result property="url" column="url" />
+                <result property="type" column="type" />
+                <result property="sort" column="sort" />
+            </association>
+        </association>
+        <collection property="spes" ofType="com.xp.glasses.entity.GoodsSpecification">
+            <id property="id" column="peId" />
+            <result property="name" column="peName" />
+            <result property="value" column="value" />
+            <result property="stock" column="peStock" />
+            <result property="attachPrice" column="attach_price" />
+        </collection>
+    </resultMap>
+
+    <select id="cartGoods" resultMap="userCarGoodsMap">
+        SELECT
+        car.id as cId,
+        car.user_id,
+        car.goods_id,
+        car.num,
+        car.choose,
+        car.create_time as cCreateTime,
+        car.update_time as cUpdateTime,
+        car.status,
+
+        g.id as gId,
+       g.name as gName,
+       g.nike_name,
+       g.description,
+       g.sales,
+       g.brand,
+       g.stock,
+       g.discounts_price,
+       g.market_price,
+       g.hot,
+       g.recommend,
+       g.is_new,
+       g.create_time as gCreateTime,
+       g.normal_price,
+       g.promotion,
+
+        spe.id as peId,
+        spe.name as peName,
+        spe.value,
+        spe.stock as peStock,
+        spe.attach_price,
+
+       img.id as iId,
+       img.mapping_id,
+       img.url,
+       img.type,
+       img.sort
+        FROM
+        buycar car
+        INNER JOIN glasses.goods g ON car.goods_id = g.id AND car.user_id = #{userId} AND car.status = 1
+        LEFT JOIN buycar_item item ON car.id = item.car_id
+        LEFT JOIN specification spe ON spe.id = item.spe_id
+        LEFT JOIN image img ON img.mapping_id = g.id AND img.type='MAIN_GOODS'
+
     </select>
 
 </mapper>
