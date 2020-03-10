@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.wechat.WeChatAddressMapper">
+    <insert id="addReceiveAddr" parameterType="com.xp.glasses.entity.ReceiveAddr">
+        INSERT INTO receive_addr (id, receive_name, receive_phone, addr, user_id, current) values
+        (#{id},#{receiveName},#{receivePhone},#{addr},#{userId},#{current})
+    </insert>
+    <delete id="removeAddr" parameterType="string">
+
+        DELETE FROM receive_addr where  id = #{id}
+    </delete>
+
+    <select id="addrs" parameterType="string" resultType="com.xp.glasses.entity.ReceiveAddr">
+        SELECT
+        id,
+        receive_name as receiveName,
+        receive_phone as receivePhone,
+        addr,
+        user_id as userId,
+        current
+        FROM receive_addr WHERE user_id = #{userId}
+        order by current DESC
+    </select>
+
+    <update id="resetCurrentAddr" parameterType="string">
+        UPDATE receive_addr SET current = 0 WHERE user_id = #{userId} AND current = 1
+    </update>
+    <update id="updateReceiveAddr" parameterType="com.xp.glasses.entity.ReceiveAddr">
+
+        UPDATE receive_addr
+        <set>
+            <if test="receiveName!=null and receiveName!=''">
+                receive_name = #{receiveName},
+            </if>
+            <if test="receivePhone!=null and receivePhone!=''">
+                receive_phone = #{receivePhone},
+            </if>
+            <if test="addr!=null and addr!=''">
+                addr = #{addr},
+            </if>
+            <if test="current!=null">
+                current = #{current},
+            </if>
+        </set>
+        where id= #{id}
+    </update>
+</mapper>

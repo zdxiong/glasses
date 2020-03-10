@@ -30,6 +30,11 @@ public class ReceiveAddr {
     private String addr;
 
     /**
+     * 当前收货地址 0-否 1-是
+     */
+    private Integer current;
+
+    /**
      * 用户ID
      */
     private String userId;
