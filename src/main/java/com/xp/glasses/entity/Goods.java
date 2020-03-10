@@ -113,6 +113,12 @@ public class Goods {
      */
     private Date createTime;
 
+
+    /**
+     * 所有的规格
+     */
+    private List<GoodsSpecification> allSpes;
+
 /************************weChat 数据包装*******************************/
     /**
      * 规格

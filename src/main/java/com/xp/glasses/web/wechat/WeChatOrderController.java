@@ -47,4 +47,21 @@ public class WeChatOrderController {
 
         return weChatOrderService.createOrder(orderForm);
     }
+
+
+    /**
+     * 根据用户购物车中商品获取预付订单信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("preOrderByCart")
+    public BaseResponse preOrderInfoByCart(String userId){
+
+        if (StringUtils.isEmpty(userId)){
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请登录.");
+        }
+        return weChatOrderService.preOrderInfoByCart(userId);
+
+    }
+
 }

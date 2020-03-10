@@ -13,4 +13,11 @@ public interface WeChatOrderService {
      * @return
      */
     BaseResponse createOrder(CreateOrderForm orderForm);
+
+    /**
+     * 根据购物车获取预付订单信息
+     * @param userId
+     * @return
+     */
+    BaseResponse preOrderInfoByCart(String userId);
 }

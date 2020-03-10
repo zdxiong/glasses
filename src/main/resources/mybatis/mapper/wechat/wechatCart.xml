@@ -83,6 +83,15 @@
         DELETE car,item FROM buycar car LEFT JOIN buycar_item item ON car.id = item.car_id WHERE car.id = #{id}
     </delete>
 
+    <delete id="deleteCartByIds" parameterType="list">
+        DELETE car,item FROM buycar car LEFT JOIN buycar_item item ON car.id = item.car_id WHERE car.id in
+        (
+        <foreach collection="list" item="id" index="index" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
     <resultMap id="buyCarMap" type="com.xp.glasses.entity.car.BuyCar">
         <id property="id" column="id"></id>
         <result property="userId" column="user_id"/>
@@ -201,6 +210,34 @@
         LEFT JOIN specification spe ON spe.id = item.spe_id
         LEFT JOIN image img ON img.mapping_id = g.id AND img.type='MAIN_GOODS'
 
+    </select>
+
+
+    <select id="getSelectCartGoods" resultType="com.xp.glasses.entity.order.PreGoods">
+        SELECT
+        car.id as cartId,
+        car.goods_id as goodsId,
+        car.num,
+        g.name,
+        g.promotion,
+        g.discounts_price as discountsPrice,
+        g.normal_price as normalPrice,
+        img.url as imageUrl
+        FROM buycar car
+        INNER JOIN goods g ON g.id = car.goods_id
+        LEFT JOIN image img ON img.mapping_id = g.id AND img.type='MAIN_GOODS'
+        WHERE car.user_id=#{userId} AND car.choose = 1
+    </select>
+
+    <select id="getSpeByCartId" resultType="com.xp.glasses.entity.GoodsSpecification">
+        SELECT
+        spe.id,
+        spe.name,
+        spe.value,
+        spe.stock,
+        spe.attach_price as attachPrice
+        FROM buycar_item item
+        INNER JOIN specification spe ON spe.id = item.spe_id where  item.car_id= #{cartId}
     </select>
 
 </mapper>
