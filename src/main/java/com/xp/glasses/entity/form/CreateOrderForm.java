@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class CreateOrderForm {
 
+    private String userId;
     /**
      * 商品
      */

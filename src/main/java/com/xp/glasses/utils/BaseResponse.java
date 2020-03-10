@@ -27,10 +27,9 @@ public class BaseResponse<T> {
         this.msg = msg;
     }
 
-    private BaseResponse(T data, ResponseCode responseCode) {
-        this.data = data;
+    private BaseResponse(String msg, ResponseCode responseCode) {
         this.code = responseCode.getCode();
-        this.msg = responseCode.getMsg();
+        this.msg = msg;
     }
 
     private BaseResponse(Integer code, String msg, T data) {
@@ -45,8 +44,8 @@ public class BaseResponse<T> {
         this.data = data;
     }
 
-    public static <T> BaseResponse build(ResponseCode responseCode, T data) {
-        BaseResponse response = new BaseResponse(data, responseCode);
+    public static <T> BaseResponse build(ResponseCode responseCode, String msg) {
+        BaseResponse response = new BaseResponse(msg, responseCode);
         return response;
     }
 

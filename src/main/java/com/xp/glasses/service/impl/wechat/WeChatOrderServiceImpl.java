@@ -149,7 +149,7 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
         }
 
         Order orderDto = initMainOrder(orderNo,orderForm.getRemarks(),
-                "f4873a44506a4ba4b2b42904a741c7c4", nowTime,totalPrice,orderForm.getAddressId());
+                orderForm.getUserId(), nowTime,totalPrice,orderForm.getAddressId());
 
         // 保存订单主表
         saveOrderMainInfo(orderDto);
@@ -159,7 +159,7 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
             saveOrderGoodsItems(orderGoodsItems);
         }
 
-        return BaseResponse.build();
+        return BaseResponse.build(orderDto.getOrderNo());
     }
 
     private void saveOrderGoodsItems(List<OrderItem> orderItems) {

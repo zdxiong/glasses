@@ -6,6 +6,7 @@ import com.xp.glasses.service.wechat.WeChatOrderService;
 import com.xp.glasses.utils.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,16 +28,21 @@ public class WeChatOrderController {
     public BaseResponse createOrder(@RequestBody CreateOrderForm orderForm){
 
         if (Objects.isNull(orderForm)){
-            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"参数错误");
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"参数错误.");
         }
 
+        if (StringUtils.isEmpty(orderForm.getUserId())){
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请登录.");
+        }
+
+
         if (CollectionUtils.isEmpty(orderForm.getGoods())){
-            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择商品");
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择商品.");
         }
 
 
         if (orderForm.getAddressId() == null){
-            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择收货地址");
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"请选择收货地址.");
         }
 
         return weChatOrderService.createOrder(orderForm);
