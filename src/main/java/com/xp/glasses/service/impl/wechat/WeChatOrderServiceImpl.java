@@ -4,6 +4,7 @@ import com.xp.glasses.config.ServerConfig;
 import com.xp.glasses.constant.ResponseCode;
 import com.xp.glasses.entity.Goods;
 import com.xp.glasses.entity.GoodsSpecification;
+import com.xp.glasses.entity.Image;
 import com.xp.glasses.entity.form.CreateOrderForm;
 import com.xp.glasses.entity.form.OrderGoodsParam;
 import com.xp.glasses.entity.order.Order;
@@ -169,7 +170,7 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
         }
 
         // 从购物车提交的订单，删除购物车已提交的商品
-        if (!CollectionUtils.isEmpty(orderForm.getCartIds())){
+        if (!CollectionUtils.isEmpty(orderForm.getCartIds())) {
             weChatCartMapper.deleteCartByIds(orderForm.getCartIds());
         }
 
@@ -191,8 +192,8 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
 
         // 获取在购物车被用户选择的商品信息
         List<PreGoods> goodsList = weChatCartMapper.getSelectCartGoods(userId);
-        if (CollectionUtils.isEmpty(goodsList)){
-            return BaseResponse.build(ResponseCode.INVALID_PARAMS,"您还没有选择商品呢！");
+        if (CollectionUtils.isEmpty(goodsList)) {
+            return BaseResponse.build(ResponseCode.INVALID_PARAMS, "您还没有选择商品呢！");
         }
         List<String> chooseId;
         Integer unitPrice = 0;
@@ -232,6 +233,35 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
         preOrder.setOrderGoods(preGoodsList);
         preOrder.setCartIds(cartIds);
         return BaseResponse.build(preOrder);
+    }
+
+    @Override
+    public BaseResponse getAllOrders(String userId) {
+
+        List<Order> orders = weChatOrderMapper.getAllOrders(userId);
+        Integer num = 0;
+        for (Order order : orders) {
+            List<OrderItem> orderItems = order.getOrderItems();
+            for (OrderItem item : orderItems) {
+                item.setUnitPrice(item.getUnitPrice() / 100);
+                num += item.getNum();
+
+                Image mainImage = item.getGoods().getMainImage();
+                mainImage.setUrl(serverConfig.imageRealUlr(mainImage.getUrl()));
+            }
+            order.setOrderPrice(order.getOrderPrice() / 100);
+            order.setNum(num);
+            num = 0;
+        }
+
+        Map<Order.OrderStatus, List<Order>> statusListMap = orders.stream().collect(Collectors.groupingBy(Order::getOrderStatus));
+        return BaseResponse.build(statusListMap);
+    }
+
+    @Override
+    public BaseResponse deleteOrder(String orderNo) {
+        weChatOrderMapper.deleteOrder(orderNo);
+        return BaseResponse.build();
     }
 
     private List<GoodsSpecification> getSpeByCartId(String cartId) {

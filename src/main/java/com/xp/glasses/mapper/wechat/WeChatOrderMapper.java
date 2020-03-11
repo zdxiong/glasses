@@ -26,4 +26,16 @@ public interface WeChatOrderMapper {
      * @param orderDto
      */
     void saveOrderMainInfo(Order orderDto);
+
+    /**
+     * 获取用户的所有订单
+     * @return
+     */
+    List<Order> getAllOrders(String userId);
+
+    /**
+     * 删除订单
+     * @param orderNo
+     */
+    void deleteOrder(String orderNo);
 }

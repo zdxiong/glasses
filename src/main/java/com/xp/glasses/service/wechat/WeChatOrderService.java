@@ -20,4 +20,18 @@ public interface WeChatOrderService {
      * @return
      */
     BaseResponse preOrderInfoByCart(String userId);
+
+    /**
+     * 获取所有订单
+     * @param userId
+     * @return
+     */
+    BaseResponse getAllOrders(String userId);
+
+    /**
+     * 删除订单
+     * @param orderNo
+     * @return
+     */
+    BaseResponse deleteOrder(String orderNo);
 }

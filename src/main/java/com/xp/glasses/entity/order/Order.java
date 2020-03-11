@@ -94,6 +94,8 @@ public class Order {
 
     private List<OrderItem> orderItems;
 
+    private Integer num;
+
     public enum OrderStatus{
         /**
          * 未支付

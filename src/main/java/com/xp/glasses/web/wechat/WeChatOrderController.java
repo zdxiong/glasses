@@ -64,4 +64,24 @@ public class WeChatOrderController {
 
     }
 
+
+    @RequestMapping("allOrders")
+    public BaseResponse getAllOrders(String userId){
+
+        if (StringUtils.isEmpty(userId)){
+            return BaseResponse.build("请登录");
+        }
+        return weChatOrderService.getAllOrders(userId);
+
+    }
+
+
+    @RequestMapping("deleteOrder")
+    public BaseResponse deleteOrder(String orderNo){
+        if (StringUtils.isEmpty(orderNo)){
+            return BaseResponse.build("请选择您要删除的订单");
+        }
+
+        return weChatOrderService.deleteOrder(orderNo);
+    }
 }
