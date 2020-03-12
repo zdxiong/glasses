@@ -34,4 +34,11 @@ public interface WeChatOrderService {
      * @return
      */
     BaseResponse deleteOrder(String orderNo);
+
+    /**
+     * 获取订单详情
+     * @param orderNo
+     * @return
+     */
+    BaseResponse orderDetail(String orderNo);
 }

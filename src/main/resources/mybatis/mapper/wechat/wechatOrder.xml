@@ -18,7 +18,10 @@
          create_time,
          pay_time,
          send_time,
-         complete_time
+         complete_time,
+         receive_name,
+        reveice_phone,
+        addr
          )
          values
         (
@@ -34,20 +37,25 @@
         #{createTime},
         #{payTime},
         #{sendTime},
-        #{completeTime}
+        #{completeTime},
+        #{receiveName},
+        #{receivePhone},
+        #{addrs}
         )
     </insert>
     <insert id="saveOrderGoodsItems" parameterType="list">
         INSERT INTO
         order_item
-        (id, order_no, goods_id, num, unit_price, attrs) VALUES
+        (id, order_no, goods_name, num, unit_price, attrs,url,goods_id) VALUES
         <foreach collection="list" separator="," index="index" item="item">
             (#{item.id},
             #{item.orderNo},
-            #{item.goodsId},
+            #{item.goodsName},
             #{item.num},
             #{item.unitPrice},
-            #{item.attrs})
+            #{item.attrs},
+            #{item.url},
+            #{item.goodsId})
         </foreach>
     </insert>
     <delete id="deleteOrder" parameterType="string">
@@ -56,38 +64,80 @@
 
     <resultMap id="orderMap" type="com.xp.glasses.entity.order.Order">
         <id property="orderNo" column="order_no"></id>
-        <result property="orderPrice" column="order_price" />
-        <result property="orderStatus" column="order_status" />
+        <result property="orderPrice" column="order_price"/>
+        <result property="orderStatus" column="order_status"/>
         <collection property="orderItems" ofType="com.xp.glasses.entity.order.OrderItem">
-               <result property="num" column="num" />
-               <result property="unitPrice" column="unit_price" />
-               <result property="attrs" column="attrs" />
-               <association property="goods" javaType="com.xp.glasses.entity.Goods">
-                   <result property="name" column="name" />
-                   <association property="mainImage" javaType="com.xp.glasses.entity.Image">
-                       <result property="url" column="url"></result>
-                   </association>
-               </association>
+            <result property="num" column="num"/>
+            <result property="unitPrice" column="unit_price"/>
+            <result property="attrs" column="attrs"/>
+            <result property="goodsName" column="goods_name"/>
+            <result property="url" column="url"/>
         </collection>
     </resultMap>
 
     <select id="getAllOrders" resultMap="orderMap" parameterType="string">
 
-        SELECT
+          SELECT
           o.order_no,
           o.order_price,
           o.order_status,
           item.num,
           item.unit_price,
           item.attrs,
-          g.name,
-          img.url
+          item.goods_name,
+          item.url
         FROM `order` o INNER JOIN glasses.order_item item ON  o.order_no = item.order_no
-
-        INNER JOIN goods g ON g.id = item.goods_id
-
-        INNER JOIN glasses.image img ON img.mapping_id = g.id and img.type = 'MAIN_GOODS'
         WHERE o.user_id = #{userId} order by o.create_time desc
 
+    </select>
+
+    <resultMap id="orderDetailMap" type="com.xp.glasses.entity.order.Order">
+        <id property="orderNo" column="order_no"/>
+        <result property="wePayNo" column="wepay_no"/>
+        <result property="logisticsNo" column="logistics_no"/>
+        <result property="orderPrice" column="order_price"/>
+        <result property="remarks" column="remarks"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="completeTime" column="complete_time"/>
+        <result property="receiveName" column="receive_name"/>
+        <result property="receivePhone" column="reveice_phone"/>
+        <result property="addrs" column="addr"/>
+
+        <collection property="orderItems" ofType="com.xp.glasses.entity.order.OrderItem">
+            <result property="num" column="num"/>
+            <result property="unitPrice" column="unit_price"/>
+            <result property="attrs" column="attrs"/>
+            <result property="num" column="num"/>
+            <result property="goodsName" column="goods_name"/>
+            <result property="url" column="url"/>
+        </collection>
+
+    </resultMap>
+    <select id="orderDetail" resultMap="orderDetailMap" parameterType="string">
+        SELECT
+        o.order_no,
+        o.wepay_no,
+        o.logistics_no,
+        o.order_price,
+        o.remarks,
+        o.order_status,
+        o.create_time,
+        o.pay_time,
+        o.send_time,
+        o.complete_time,
+        o.receive_name,
+        o.reveice_phone,
+        o.addr,
+        item.num,
+        item.unit_price,
+        item.attrs,
+        item.goods_name,
+        item.url
+        FROM glasses.`order` o
+        INNER JOIN glasses.order_item item ON o.order_no = item.order_no
+        WHERE o.order_no = #{orderNo}
     </select>
 </mapper>

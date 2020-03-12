@@ -5,12 +5,14 @@ import com.xp.glasses.constant.ResponseCode;
 import com.xp.glasses.entity.Goods;
 import com.xp.glasses.entity.GoodsSpecification;
 import com.xp.glasses.entity.Image;
+import com.xp.glasses.entity.ReceiveAddr;
 import com.xp.glasses.entity.form.CreateOrderForm;
 import com.xp.glasses.entity.form.OrderGoodsParam;
 import com.xp.glasses.entity.order.Order;
 import com.xp.glasses.entity.order.OrderItem;
 import com.xp.glasses.entity.order.PreGoods;
 import com.xp.glasses.entity.order.PreOrder;
+import com.xp.glasses.mapper.ReceiveAddrMapper;
 import com.xp.glasses.mapper.wechat.WeChatCartMapper;
 import com.xp.glasses.mapper.wechat.WeChatOrderMapper;
 import com.xp.glasses.service.GoodsService;
@@ -48,6 +50,9 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
 
     @Autowired
     ServerConfig serverConfig;
+
+    @Autowired
+    ReceiveAddrMapper receiveAddrMapper;
 
     @Override
     public BaseResponse createOrder(CreateOrderForm orderForm) {
@@ -145,6 +150,8 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
             String goodsItemId = IdUtils.initId();
             orderItem = new OrderItem();
             orderItem.setGoodsId(goods.getId());
+            orderItem.setGoodsName(goods.getName());
+            orderItem.setUrl(goods.getMainImage().getUrl());
             orderItem.setId(goodsItemId);
             orderItem.setOrderNo(orderNo);
             orderItem.setNum(num);
@@ -245,9 +252,7 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
             for (OrderItem item : orderItems) {
                 item.setUnitPrice(item.getUnitPrice() / 100);
                 num += item.getNum();
-
-                Image mainImage = item.getGoods().getMainImage();
-                mainImage.setUrl(serverConfig.imageRealUlr(mainImage.getUrl()));
+                item.setUrl(serverConfig.imageRealUlr(item.getUrl()));
             }
             order.setOrderPrice(order.getOrderPrice() / 100);
             order.setNum(num);
@@ -278,15 +283,34 @@ public class WeChatOrderServiceImpl implements WeChatOrderService {
     }
 
 
+    @Override
+    public BaseResponse orderDetail(String orderNo) {
+        Order order = weChatOrderMapper.orderDetail(orderNo);
+        Integer num = 0;
+        for (OrderItem item : order.getOrderItems()) {
+            num += item.getNum();
+            item.setUnitPrice(item.getUnitPrice() / 100);
+            item.setUrl(serverConfig.imageRealUlr(item.getUrl()));
+        }
+        order.setOrderPrice(order.getOrderPrice() / 100);
+        order.setNum(num);
+        return BaseResponse.build(order);
+    }
+
     private Order initMainOrder(String orderNo, String remarks, String userId,
                                 Date createTime, Long totalPrice, String addressId) {
         Order orderDto = new Order();
-
         orderDto.setOrderNo(orderNo);
         orderDto.setRemarks(remarks);
         // 设置订单未支付
         orderDto.setOrderStatus(Order.OrderStatus.NO_PAY);
         orderDto.setAddressId(addressId);
+        ReceiveAddr receiveAddr = (ReceiveAddr) receiveAddrMapper.selectById(addressId);
+        if (!Objects.isNull(receiveAddr)) {
+            orderDto.setReceiveName(receiveAddr.getReceiveName());
+            orderDto.setReceivePhone(receiveAddr.getReceivePhone());
+            orderDto.setAddrs(receiveAddr.getAddr());
+        }
         // 物流
 //        orderDto.setLogisticsNo(null);
         // 门店

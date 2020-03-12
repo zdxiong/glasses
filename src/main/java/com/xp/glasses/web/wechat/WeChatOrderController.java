@@ -84,4 +84,14 @@ public class WeChatOrderController {
 
         return weChatOrderService.deleteOrder(orderNo);
     }
+
+    @RequestMapping("detail")
+    public BaseResponse orderDetail(String orderNo){
+
+        if (StringUtils.isEmpty(orderNo)){
+            return  BaseResponse.build("请选择订单");
+        }
+
+        return weChatOrderService.orderDetail(orderNo);
+    }
 }

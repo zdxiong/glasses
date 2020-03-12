@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xp.glasses.mapper.ReceiveAddrMapper">
+   <select id="selectById" parameterType="string" resultType="com.xp.glasses.entity.ReceiveAddr">
+
+       SELECT
+       id,
+        receive_name as receiveName,
+        receive_phone as receivePhone,
+        addr,
+        user_id as userId,
+        current
+       FROM glasses.receive_addr where id = #{id}
+
+
+   </select>
+</mapper>

@@ -38,4 +38,11 @@ public interface WeChatOrderMapper {
      * @param orderNo
      */
     void deleteOrder(String orderNo);
+
+    /**
+     * 获取订单详情
+     * @param orderNo
+     * @return
+     */
+    Order orderDetail(String orderNo);
 }

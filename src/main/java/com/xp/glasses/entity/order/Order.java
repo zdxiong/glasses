@@ -83,6 +83,19 @@ public class Order {
      */
     private Date completeTime;
 
+    /**
+     * 收货人姓名
+     */
+    private String receiveName;
+    /**
+     * 收货人电话
+     */
+    private String receivePhone;
+    /**
+     * 收货人地址
+     */
+    private String addrs;
+
     /**************************************表字段 end*********************************************/
 
 
