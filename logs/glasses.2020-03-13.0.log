@@ -1,0 +1,250 @@
+2020-03-13 14:08:20.388  INFO 13452 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 13452 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 14:08:20.390  INFO 13452 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 14:08:20.557  INFO 13452 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 14:08:20.557  INFO 13452 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 14:08:23.730  INFO 13452 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 14:08:23.755  INFO 13452 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 14:08:23.755  INFO 13452 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 14:08:23.904  INFO 13452 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 14:08:23.904  INFO 13452 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 3347 ms
+2020-03-13 14:08:25.116  INFO 13452 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 14:08:25.219  INFO 13452 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 14:08:26.009  INFO 13452 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 14:08:27.030  INFO 13452 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 14:08:27.031  INFO 13452 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 14:08:27.035  INFO 13452 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 7.717 seconds (JVM running for 10.849)
+2020-03-13 14:08:31.038  INFO 15480 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 15480 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 14:08:31.047  INFO 15480 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 14:08:31.120  INFO 15480 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 14:08:31.120  INFO 15480 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 14:08:32.433  INFO 15480 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 14:08:32.456  INFO 15480 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 14:08:32.456  INFO 15480 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 14:08:32.680  INFO 15480 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 14:08:32.680  INFO 15480 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1560 ms
+2020-03-13 14:08:33.322  INFO 15480 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 14:08:33.396  INFO 15480 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 14:08:33.843  INFO 15480 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 14:08:34.753  INFO 15480 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 14:08:34.754  INFO 15480 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 14:08:34.757  INFO 15480 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.089 seconds (JVM running for 5.75)
+2020-03-13 14:08:42.800  INFO 15480 --- [https-jsse-nio-8443-exec-8] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 14:08:42.801  INFO 15480 --- [https-jsse-nio-8443-exec-8] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 14:08:42.810  INFO 15480 --- [https-jsse-nio-8443-exec-8] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 9 ms
+2020-03-13 14:08:43.044  INFO 15480 --- [https-jsse-nio-8443-exec-5] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 14:09:40.494  INFO 4140 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 4140 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 14:09:40.498  INFO 4140 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 14:09:40.616  INFO 4140 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 14:09:40.616  INFO 4140 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 14:09:42.541  INFO 4140 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 443 (https) 9090 (http)
+2020-03-13 14:09:42.563  INFO 4140 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 14:09:42.564  INFO 4140 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 14:09:42.721  INFO 4140 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 14:09:42.722  INFO 4140 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 2106 ms
+2020-03-13 14:09:43.492  INFO 4140 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 14:09:43.589  INFO 4140 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 14:09:44.139  INFO 4140 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 14:09:44.166  INFO 4140 --- [restartedMain] org.apache.catalina.core.StandardService : Stopping service [Tomcat]
+2020-03-13 14:09:44.181  INFO 4140 --- [restartedMain] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-03-13 14:09:44.231 ERROR 4140 --- [restartedMain] org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 443 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 443 or configure this application to listen on another port.
+
+2020-03-13 14:09:44.234  INFO 4140 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-03-13 14:09:44.234  INFO 4140 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource : {dataSource-0} closing ...
+2020-03-13 14:10:10.088  INFO 6968 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 6968 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 14:10:10.091  INFO 6968 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 14:10:10.210  INFO 6968 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 14:10:10.210  INFO 6968 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 14:10:12.340  INFO 6968 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 14:10:12.371  INFO 6968 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 14:10:12.371  INFO 6968 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 14:10:12.568  INFO 6968 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 14:10:12.568  INFO 6968 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 2358 ms
+2020-03-13 14:10:13.506  INFO 6968 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 14:10:13.635  INFO 6968 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 14:10:14.516  INFO 6968 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 14:10:15.888  INFO 6968 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 14:10:15.891  INFO 6968 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 14:10:15.896  INFO 6968 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 6.609 seconds (JVM running for 9.275)
+2020-03-13 14:10:25.421  INFO 6968 --- [https-jsse-nio-8443-exec-4] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 14:10:25.422  INFO 6968 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 14:10:25.453  INFO 6968 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 31 ms
+2020-03-13 14:10:25.756  INFO 6968 --- [https-jsse-nio-8443-exec-4] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 15:23:24.545  INFO 19536 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 19536 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:23:24.547  INFO 19536 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:23:24.627  INFO 19536 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:23:24.628  INFO 19536 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:23:26.368  INFO 19536 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:23:26.388  INFO 19536 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:23:26.388  INFO 19536 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:23:26.519  INFO 19536 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:23:26.519  INFO 19536 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1891 ms
+2020-03-13 15:23:27.424  INFO 19536 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:23:27.530  INFO 19536 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:23:28.023  INFO 19536 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:23:29.110  INFO 19536 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:23:29.111  INFO 19536 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:23:29.114  INFO 19536 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.968 seconds (JVM running for 6.939)
+2020-03-13 15:33:24.137  INFO 9952 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 9952 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:33:24.140  INFO 9952 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:33:24.205  INFO 9952 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:33:24.206  INFO 9952 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:33:25.556  INFO 9952 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:33:25.575  INFO 9952 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:33:25.575  INFO 9952 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:33:25.700  INFO 9952 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:33:25.700  INFO 9952 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1494 ms
+2020-03-13 15:33:26.355  INFO 9952 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:33:26.428  INFO 9952 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:33:26.873  INFO 9952 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:33:27.824  INFO 9952 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:33:27.825  INFO 9952 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:33:27.828  INFO 9952 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.07 seconds (JVM running for 5.815)
+2020-03-13 15:47:39.701  INFO 9952 --- [https-jsse-nio-8443-exec-6] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 15:47:39.716  INFO 9952 --- [https-jsse-nio-8443-exec-6] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 15:47:39.742  INFO 9952 --- [https-jsse-nio-8443-exec-6] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 26 ms
+2020-03-13 15:47:39.790 ERROR 9952 --- [https-jsse-nio-8443-exec-6] com.xp.glasses.web.GlobalExceptionHandler : 系统错误：null
+2020-03-13 15:47:39.962  WARN 9952 --- [https-jsse-nio-8443-exec-6] org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver : Resolved [java.lang.NullPointerException]
+2020-03-13 15:48:19.151  INFO 20384 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 20384 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:48:19.155  INFO 20384 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:48:19.249  INFO 20384 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:48:19.250  INFO 20384 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:48:20.649  INFO 20384 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:48:20.667  INFO 20384 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:48:20.667  INFO 20384 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:48:20.790  INFO 20384 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:48:20.790  INFO 20384 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1540 ms
+2020-03-13 15:48:21.428  INFO 20384 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:48:21.500  INFO 20384 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:48:21.935  INFO 20384 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:48:22.864  INFO 20384 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:48:22.864  INFO 20384 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:48:22.868  INFO 20384 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.205 seconds (JVM running for 5.85)
+2020-03-13 15:48:32.381  INFO 20384 --- [https-jsse-nio-8443-exec-2] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 15:48:32.381  INFO 20384 --- [https-jsse-nio-8443-exec-2] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 15:48:32.387  INFO 20384 --- [https-jsse-nio-8443-exec-2] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 6 ms
+2020-03-13 15:48:32.413 ERROR 20384 --- [https-jsse-nio-8443-exec-2] com.xp.glasses.web.GlobalExceptionHandler : 系统错误：null
+2020-03-13 15:48:32.487  WARN 20384 --- [https-jsse-nio-8443-exec-2] org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver : Resolved [java.lang.NullPointerException]
+2020-03-13 15:48:53.929  INFO 3060 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 3060 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:48:53.932  INFO 3060 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:48:53.997  INFO 3060 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:48:53.997  INFO 3060 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:48:55.283  INFO 3060 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:48:55.301  INFO 3060 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:48:55.301  INFO 3060 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:48:55.427  INFO 3060 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:48:55.427  INFO 3060 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1430 ms
+2020-03-13 15:48:56.088  INFO 3060 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:48:56.165  INFO 3060 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:48:56.605  INFO 3060 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:48:57.547  INFO 3060 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:48:57.548  INFO 3060 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:48:57.551  INFO 3060 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.042 seconds (JVM running for 5.752)
+2020-03-13 15:49:04.603  INFO 3060 --- [https-jsse-nio-8443-exec-2] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 15:49:04.603  INFO 3060 --- [https-jsse-nio-8443-exec-2] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 15:49:04.609  INFO 3060 --- [https-jsse-nio-8443-exec-2] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 6 ms
+2020-03-13 15:49:04.847  INFO 3060 --- [https-jsse-nio-8443-exec-2] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 15:58:29.888  INFO 3128 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 3128 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:58:29.892  INFO 3128 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:58:29.963  INFO 3128 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:58:29.963  INFO 3128 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:58:31.298  INFO 3128 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:58:31.317  INFO 3128 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:58:31.317  INFO 3128 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:58:31.444  INFO 3128 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:58:31.444  INFO 3128 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1481 ms
+2020-03-13 15:58:32.127  INFO 3128 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:58:32.204  INFO 3128 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:58:32.662  INFO 3128 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:58:33.582  INFO 3128 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:58:33.583  INFO 3128 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:58:33.586  INFO 3128 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.131 seconds (JVM running for 5.894)
+2020-03-13 15:58:41.884  INFO 3128 --- [https-jsse-nio-8443-exec-4] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 15:58:41.884  INFO 3128 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 15:58:41.894  INFO 3128 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 10 ms
+2020-03-13 15:58:41.959  INFO 3128 --- [https-jsse-nio-8443-exec-4] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 15:58:42.575 ERROR 3128 --- [https-jsse-nio-8443-exec-5] com.xp.glasses.web.GlobalExceptionHandler : 系统错误：
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list'
+### The error may exist in file [D:\IdeaProject\glasses\target\classes\mybatis\mapper\wechat\wechatGoods.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT           g.id,         g.name,         g.nike_name,         g.description,         g.sales,         g.shop_id,         g.category_id,         g.brand,         g.stock,         g.discounts_price,         g.market_price,         g.hot,         g.recommend,         g.is_new,         g.create_time,         g.normal_price,         g.promotion,         i.id as iId,         i.mapping_id,         i.url,         i.type,         i.sort        FROM glasses.goods g LEFT JOIN glasses.image img ON g.id = img.mapping_id AND img.type='MAIN_GOODS'          where g.category_id =?
+### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list'
+; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list'
+2020-03-13 15:58:42.577  WARN 3128 --- [https-jsse-nio-8443-exec-5] org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver : Resolved [org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list'
+### The error may exist in file [D:\IdeaProject\glasses\target\classes\mybatis\mapper\wechat\wechatGoods.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT           g.id,         g.name,         g.nike_name,         g.description,         g.sales,         g.shop_id,         g.category_id,         g.brand,         g.stock,         g.discounts_price,         g.market_price,         g.hot,         g.recommend,         g.is_new,         g.create_time,         g.normal_price,         g.promotion,         i.id as iId,         i.mapping_id,         i.url,         i.type,         i.sort        FROM glasses.goods g LEFT JOIN glasses.image img ON g.id = img.mapping_id AND img.type='MAIN_GOODS'          where g.category_id =?
+### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list'
+; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column 'i.id' in 'field list']
+2020-03-13 15:59:06.772  INFO 20932 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 20932 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 15:59:06.774  INFO 20932 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 15:59:06.846  INFO 20932 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 15:59:06.846  INFO 20932 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 15:59:08.227  INFO 20932 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 15:59:08.245  INFO 20932 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 15:59:08.246  INFO 20932 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 15:59:08.388  INFO 20932 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 15:59:08.388  INFO 20932 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1542 ms
+2020-03-13 15:59:09.148  INFO 20932 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 15:59:09.220  INFO 20932 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 15:59:09.671  INFO 20932 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 15:59:10.564  INFO 20932 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 15:59:10.565  INFO 20932 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 15:59:10.569  INFO 20932 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.135 seconds (JVM running for 5.819)
+2020-03-13 15:59:18.146  INFO 20932 --- [https-jsse-nio-8443-exec-4] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 15:59:18.147  INFO 20932 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 15:59:18.155  INFO 20932 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 8 ms
+2020-03-13 15:59:18.220  INFO 20932 --- [https-jsse-nio-8443-exec-4] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 16:02:54.379  INFO 20596 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 20596 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 16:02:54.382  INFO 20596 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 16:02:54.458  INFO 20596 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 16:02:54.459  INFO 20596 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 16:02:55.781  INFO 20596 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 16:02:55.800  INFO 20596 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 16:02:55.801  INFO 20596 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 16:02:55.939  INFO 20596 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 16:02:55.939  INFO 20596 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1480 ms
+2020-03-13 16:02:56.610  INFO 20596 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 16:02:56.683  INFO 20596 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 16:02:57.133  INFO 20596 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 16:02:58.070  INFO 20596 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 16:02:58.071  INFO 20596 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 16:02:58.075  INFO 20596 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.108 seconds (JVM running for 5.834)
+2020-03-13 16:04:13.559  INFO 11352 --- [restartedMain] com.xp.glasses.GlassesApplication : Starting GlassesApplication on MrXiong with PID 11352 (D:\IdeaProject\glasses\target\classes started by Mrxiong in D:\IdeaProject\glasses)
+2020-03-13 16:04:13.562  INFO 11352 --- [restartedMain] com.xp.glasses.GlassesApplication : The following profiles are active: local
+2020-03-13 16:04:13.639  INFO 11352 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-03-13 16:04:13.640  INFO 11352 --- [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-03-13 16:04:15.042  INFO 11352 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8443 (https) 9090 (http)
+2020-03-13 16:04:15.061  INFO 11352 --- [restartedMain] org.apache.catalina.core.StandardService : Starting service [Tomcat]
+2020-03-13 16:04:15.061  INFO 11352 --- [restartedMain] org.apache.catalina.core.StandardEngine : Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-03-13 16:04:15.187  INFO 11352 --- [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring embedded WebApplicationContext
+2020-03-13 16:04:15.188  INFO 11352 --- [restartedMain] org.springframework.web.context.ContextLoader : Root WebApplicationContext: initialization completed in 1547 ms
+2020-03-13 16:04:15.842  INFO 11352 --- [restartedMain] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor : Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-13 16:04:15.917  INFO 11352 --- [restartedMain] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping : Adding welcome page template: index
+2020-03-13 16:04:16.358  INFO 11352 --- [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer : LiveReload server is running on port 35729
+2020-03-13 16:04:17.243  INFO 11352 --- [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8443 (https) 9090 (http) with context path ''
+2020-03-13 16:04:17.244  INFO 11352 --- [restartedMain] com.xp.glasses.config.ServerConfig : 图片文件目录创建是否成功：true
+2020-03-13 16:04:17.247  INFO 11352 --- [restartedMain] com.xp.glasses.GlassesApplication : Started GlassesApplication in 4.142 seconds (JVM running for 5.847)
+2020-03-13 16:06:24.732  INFO 11352 --- [https-jsse-nio-8443-exec-4] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-03-13 16:06:24.733  INFO 11352 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2020-03-13 16:06:24.740  INFO 11352 --- [https-jsse-nio-8443-exec-4] org.springframework.web.servlet.DispatcherServlet : Completed initialization in 7 ms
+2020-03-13 16:06:24.795  INFO 11352 --- [https-jsse-nio-8443-exec-4] com.alibaba.druid.pool.DruidDataSource : {dataSource-1} inited
+2020-03-13 16:33:57.153  INFO 11352 --- [https-jsse-nio-8443-exec-3] com.xp.glasses.web.wechat.WeChatUserController : clientInfo:{"clientType":"wx","appnm":"xp-ybsyj","model":"iPhone 6/7/8","os":"iOS 10.0.1","screen":"375*667","chennel":"miniprogram"}
+2020-03-13 16:33:57.153  INFO 11352 --- [https-jsse-nio-8443-exec-1] com.xp.glasses.web.wechat.WeChatUserController : clientInfo:{"clientType":"wx","appnm":"xp-ybsyj","model":"iPhone 6/7/8","os":"iOS 10.0.1","screen":"375*667","chennel":"miniprogram"}
+2020-03-13 16:34:01.187  INFO 11352 --- [https-jsse-nio-8443-exec-8] com.xp.glasses.web.wechat.WeChatUserController : clientInfo:{"clientType":"wx","appnm":"xp-ybsyj","model":"iPhone 6/7/8","os":"iOS 10.0.1","screen":"375*667","chennel":"miniprogram"}

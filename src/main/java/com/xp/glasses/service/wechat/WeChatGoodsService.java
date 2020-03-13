@@ -27,4 +27,11 @@ public interface WeChatGoodsService {
      * @return
      */
     BaseResponse goodsDetail(String goodsId);
+
+    /**
+     * 根据商品ID查询
+     * @param cid
+     * @return
+     */
+    BaseResponse getGoodsByCid(String cid);
 }

@@ -40,4 +40,11 @@ public interface WeChatGoodsMapper {
      * @return
      */
     Goods goodsDetail(String goodsId);
+
+    /**
+     * 根据分类ID 查询商品
+     * @param cid
+     * @return
+     */
+    List<Goods> getGoodsByCid(String cid);
 }

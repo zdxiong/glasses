@@ -78,4 +78,11 @@
         goods g LEFT JOIN image i ON g.id = i.mapping_id AND i.type = 'MAIN_GOODS'
         where g.id = #{goodsId}
     </select>
+
+    <select id="getGoodsByCid" resultMap="goodsMap">
+        SELECT <include refid="goodsFiled"/> FROM glasses.goods g LEFT JOIN glasses.image i ON g.id = i.mapping_id AND i.type='MAIN_GOODS'
+
+        where g.category_id =#{cid}
+
+    </select>
 </mapper>

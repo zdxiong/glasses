@@ -162,4 +162,27 @@ public class WeChatGoodsServiceImpl implements WeChatGoodsService {
         }
         return BaseResponse.build(goods);
     }
+
+    @Override
+    public BaseResponse getGoodsByCid(String cid) {
+        List<Goods>  goods = weChatGoodsMapper.getGoodsByCid( cid);
+
+        for (Goods good : goods) {
+            if (good.getNormalPrice()!= null){
+                good.setNormalPrice(good.getNormalPrice()/100);
+            }
+
+            if (good.getDiscountsPrice()!=null){
+                good.setDiscountsPrice(good.getDiscountsPrice()/100);
+            }
+
+            if (good.getMarketPrice()!=null){
+                good.setMarketPrice(good.getMarketPrice()/100);
+            }
+
+            Image mainImage = good.getMainImage();
+            mainImage.setUrl(serverConfig.imageRealUlr(mainImage.getUrl()));
+        }
+        return BaseResponse.build(goods);
+    }
 }

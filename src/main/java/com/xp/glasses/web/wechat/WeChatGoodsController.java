@@ -49,4 +49,13 @@ public class WeChatGoodsController {
         return weChatGoodsService.goodsDetail(goodsId);
     }
 
+    /**
+     * @param cid
+     * @return
+     */
+    @RequestMapping("getByCid")
+    public BaseResponse getGoodsByCid(String cid){
+        return weChatGoodsService.getGoodsByCid(cid);
+    }
+
 }
